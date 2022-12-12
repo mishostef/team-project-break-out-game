@@ -1,6 +1,6 @@
 import { Vector } from "../utils/vector";
 
-export class Ball {
+export class Paddle {
     private image: HTMLImageElement = new Image();
 
     constructor(
@@ -8,9 +8,5 @@ export class Ball {
         image: string
     ) {
         this.image.src = image;
-    }
-
-    getImage(): HTMLImageElement {
-        return this.image;
     }
 }

@@ -1,9 +1,14 @@
 body {
     background-image: url('https://images.unsplash.com/photo-1604928844386-97d0ac6845fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDZ8fHxlbnwwfHx8fA%3D%3D&w=1000&q=80');
+    background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 canvas {
     border: 2px solid white;
+    margin: auto;
+    width: 80%;
 }
 
 #game {

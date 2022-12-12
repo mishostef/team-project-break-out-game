@@ -17,7 +17,7 @@ const bb = new b(new v(5, 5), new v(5, 5));
 const bricks = createBricks();
 const boardImg = document.getElementById('board') as HTMLImageElement;
 const board = new Board(new v(canvasView.canvas.width / 2, canvasView.canvas.height - 100), boardImg);
-
+const ball = new Ball({ x: 200, y: 200 }, "/assets/ball.png");
 
 playBtn.addEventListener('click', () => {
     document.getElementById('container').style.display = 'none';
@@ -44,13 +44,23 @@ export function update(time: number) {
     // if (isRunning)
     requestAnimationFrame(update);
 }
+console.log(canvasView.canvas.height);
 
 export function loop() {
     canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
     canvasView.drawBricks(bricks);
     canvasView.drawBoard(board);
     bb.move();
-    canvasView.drawBall(bb);
+    //canvasView.drawBall(bb);
+    canvasView.drawBall(ball);
+
+    if (ball.position.y <= canvasView.canvas.height - 50) {
+        ball.position.y += 2;
+        ball.position.x += 1;
+    }
+
+    //bb.move();
+    //canvasView.drawBall(bb);
 }
 
 
