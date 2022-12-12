@@ -1,8 +1,9 @@
+import { Ball } from "./figures/Ball";
 import { createBricks } from "./utils/brickFactory";
 import { BRICK_HEIGHT, BRICK_ROWS, BRICK_WIDTH } from "./utils/constants";
-import { Ball } from "./gameObjects/Ball";
+import { Ball as b } from "./gameObjects/Ball";
 import { Vector } from "./utils/vector";
-import { Vector as v } from "./Geometry/Vector";
+import { Vector as v} from "./Geometry/Vector";
 const playBtn = document.getElementById('play-btn');
 
 playBtn.addEventListener('click', () => {
@@ -14,8 +15,7 @@ function startGame() {
     const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
     canvas.style.display = 'block';
     const ctx = canvas.getContext('2d');
-    const ball = new Ball(new v(5, 5), new v(5, 5), ctx);
-    ball.draw();
+const ball = new b(new v(5,5),new v(5,5),ctx);
     drawBricks(ctx);
 }
 
@@ -25,7 +25,11 @@ function drawBricks(ctx: CanvasRenderingContext2D) {
     for (let r = 0; r < BRICK_ROWS; r++) {
         for (let c = 0; c < bricks.length; c++) {
             const brick = bricks[c];
-            drawImage(brick.position.x, brick.position.y, brick.getImage());
+            const pos: Vector = {
+                x: brick.position.x,
+                y: brick.position.y
+            }
+            canvasView.drawImage(pos , brick.getImage(), BRICK_WIDTH, BRICK_HEIGHT);
         }
     }
 
