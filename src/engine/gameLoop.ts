@@ -12,9 +12,19 @@ const STEP_SIZE = 20;
 
 const bricks = createBricks();
 const boardImg = document.getElementById('board') as HTMLImageElement;
-const board = new Board(new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100), boardImg);
+const boardPosition = new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100);
+const board = new Board(boardPosition, boardImg);
 const ball = new Ball({ x: 200, y: 200 }, "/assets/ball.png");
+const input: { [code: string]: boolean } = {};
 
+
+window.addEventListener('keydown', event => {
+    //input[event.code] = true;
+    alert(event.key)
+});
+window.addEventListener('keyup', event => {
+    //input[event.code] = false;
+});
 export function update(time: number) {
     const delta = time - lastTime;
     lastTime = time;
