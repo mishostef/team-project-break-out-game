@@ -19,11 +19,11 @@ const input: { [code: string]: boolean } = {};
 
 
 window.addEventListener('keydown', event => {
-    //input[event.code] = true;
-    alert(event.key)
+    input[event.code] = true;
+    //alert(event.key)
 });
 window.addEventListener('keyup', event => {
-    //input[event.code] = false;
+    input[event.code] = false;
 });
 export function update(time: number) {
     const delta = time - lastTime;
@@ -43,6 +43,14 @@ export function update(time: number) {
 
 
 export function loop() {
+    let boardVelocity
+    if (input['ArrowLeft']) {
+        boardVelocity = new Vector(-5, 0);
+        move(board, boardVelocity);
+    } else if (input['ArrowRight']) {
+        boardVelocity = new Vector(5, 0);
+        move(board, boardVelocity);
+    }
     canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
     canvasView.drawBricks(bricks);
     canvasView.drawBoard(board);
