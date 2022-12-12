@@ -18,13 +18,17 @@ export class CanvasView {
         const image = new Image();
         image.src = source;
 
-        image.onload = () => {
-            this.ctx.drawImage(image, position.x, position.y, width, height);
-        };
+        // image.onload = () => {
+        this.ctx.beginPath();
+        //this.ctx.drawImage(image, position.x, position.y, width, height);
+        this.ctx.rect(position.x, position.y, 50, 50);
+        this.ctx.fill();
+        this.ctx.closePath();
+        // };
     }
 
-    drawBricks() {
-        const bricks = createBricks();
+    drawBricks(bricks) {
+        //  const bricks = createBricks();
 
         for (let r = 0; r < BRICK_ROWS; r++) {
             for (let c = 0; c < bricks.length; c++) {
@@ -33,11 +37,10 @@ export class CanvasView {
                     x: brick.position.x,
                     y: brick.position.y
                 }
-                const binded =this.drawImage.bind(this);
                 this.drawImage(pos, brick.getImage(), BRICK_WIDTH, BRICK_HEIGHT);
             }
         }
-    }  
+    }
 
     drawBall(ball: b) {
         this.ctx.beginPath()
