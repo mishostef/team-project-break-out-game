@@ -10,7 +10,7 @@ export class Brick {
         this.image.src = image;
     }
 
-    getImage(): string {
-        return this.image.src;
+    getImage(): HTMLImageElement {
+        return this.image;
     }
 }

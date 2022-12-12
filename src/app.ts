@@ -11,10 +11,12 @@ let lastTime = 0;
 let elapsed = 0;
 const STEP_SIZE = 20;
 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-canvas.style.display = 'block';
+//canvas.style.display = 'block';
 const ctx = canvas.getContext('2d');
 const bb = new b(new v(5, 5), new v(5, 5));
 const bricks = createBricks();
+
+const ball = new Ball({ x: 200, y: 200 }, "/assets/ball.png");
 playBtn.addEventListener('click', () => {
     document.getElementById('container').style.display = 'none';
     startGame();
@@ -46,8 +48,12 @@ export function loop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     canvasView.drawBricks(bricks);
-    bb.move();
-    canvasView.drawBall(bb);
+    canvasView.drawBall(ball);
+
+    ball.position.y += 2;
+    ball.position.x += 1;
+    //bb.move();
+    //canvasView.drawBall(bb);
 }
 
 

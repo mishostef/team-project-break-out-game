@@ -2,6 +2,8 @@ import { Vector } from "../utils/vector";
 import { BRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT } from "../utils/constants";
 import { createBricks } from "../utils/brickFactory";
 import { Ball as b } from "../gameObjects/Ball";
+import { Brick } from "../figures/Brick";
+import { Ball } from "../figures/Ball";
 
 export class CanvasView {
     private ctx: CanvasRenderingContext2D;
@@ -14,20 +16,12 @@ export class CanvasView {
         this.ctx = this.canvas.getContext('2d');
     }
 
-    drawImage(position: Vector, source: string, width: number, height: number) {
-        const image = new Image();
-        image.src = source;
-
-        // image.onload = () => {
-        this.ctx.beginPath();
-        //this.ctx.drawImage(image, position.x, position.y, width, height);
-        this.ctx.rect(position.x, position.y, 50, 50);
-        this.ctx.fill();
-        this.ctx.closePath();
-        // };
+    drawImage(position: Vector, image: HTMLImageElement, width: number, height: number) {
+        this.ctx.drawImage(image, position.x, position.y, width, height);
     }
 
-    drawBricks(bricks) {
+    drawBricks(bricks: Brick[]) {
+        console.log(bricks);
         //  const bricks = createBricks();
 
         for (let r = 0; r < BRICK_ROWS; r++) {
@@ -42,12 +36,13 @@ export class CanvasView {
         }
     }
 
-    drawBall(ball: b) {
-        this.ctx.beginPath()
-        this.ctx.arc(ball.position.x, ball.position.y, ball.radius, 0, 2 * Math.PI);
-        this.ctx.fillStyle = "red";
-        this.ctx.fill();
-        this.ctx.closePath();
+    drawBall(ball: Ball) {
+        // this.ctx.beginPath()
+        // this.ctx.arc(ball.position.x, ball.position.y, ball.radius, 0, 2 * Math.PI);
+        // this.ctx.fillStyle = "red";
+        // this.ctx.fill();
+        // this.ctx.closePath();
+        this.drawImage(ball.position, ball.getImage(), 40, 40);
     }
     getContext(): CanvasRenderingContext2D {
         return this.ctx;
