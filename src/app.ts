@@ -1,12 +1,12 @@
 import { Ball } from "./figures/Ball";
 
 import { Ball as b } from "./gameObjects/Ball";
-import { Vector } from "./utils/vector";
-import { Vector as v } from "./Geometry/Vector";
+import { Vector as v, Vector } from "./Geometry/Vector";
 import { CanvasView } from "./view/CanvasView"
 const playBtn = document.getElementById('play-btn');
 import { createBricks } from "./utils/brickFactory";
 import { Board } from "./gameObjects/Board";
+import { moveBall } from "./engine/move"
 const canvasView = new CanvasView('gameCanvas');
 let lastTime = 0;
 let elapsed = 0;
@@ -50,18 +50,10 @@ export function loop() {
     canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
     canvasView.drawBricks(bricks);
     canvasView.drawBoard(board);
-    bb.move();
-    //canvasView.drawBall(bb);
     canvasView.drawBall(ball);
 
     if (ball.position.y <= canvasView.canvas.height - 50) {
-        ball.position.y += 2;
-        ball.position.x += 1;
+        const velocity = new Vector(1, 2);
+        moveBall(ball, velocity);
     }
-
-    //bb.move();
-    //canvasView.drawBall(bb);
 }
-
-
-

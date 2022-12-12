@@ -5,9 +5,6 @@ export class Ball {
     private color = "red";
 
     constructor(public position: Vector, public velocity: Vector) { }
-    move() {
-        this.position.x += this.velocity.x;
-        this.position.y += this.velocity.y;
-    }
+    
 
 }

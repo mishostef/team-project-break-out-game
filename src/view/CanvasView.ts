@@ -1,6 +1,5 @@
 import { Vector } from "../utils/vector";
 import { BRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT } from "../utils/constants";
-import { createBricks } from "../utils/brickFactory";
 import { Ball } from "../figures/Ball";
 import { Brick } from "../figures/Brick";
 import { Board } from "../gameObjects/Board";
