@@ -1,28 +1,45 @@
-// export function update(time: number) {
-//     const delta = time - lastTime;
-//     lastTime = time;
-//     elapsed += delta;
-//     if (elapsed > STEP_SIZE * 5) {
-//         elapsed = STEP_SIZE * 5;
-//     }
+import { createBricks } from "../utils/brickFactory";
+import { CanvasView } from "../view/CanvasView";
+import { Board } from "../figures/Board";
+import { Ball } from "../figures/Ball";
+import { Vector } from "../Geometry/Vector";
+import { move } from "./move";
 
-//     while (elapsed > STEP_SIZE) {
-//         elapsed -= STEP_SIZE;
-//         gameLoop();
-//     }
-//     // if (isRunning)
-//     requestAnimationFrame(update);
-// }
+const canvasView = new CanvasView('gameCanvas');
+let lastTime = 0;
+let elapsed = 0;
+const STEP_SIZE = 20;
 
-// export function gameLoop() {
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     bb.move();
-//     drawBall(bb);
-// }
-// function drawBall(ball: b) {
-//     ctx.beginPath()
-//     ctx.arc(ball.position.x, ball.position.y, ball.radius, 0, 2 * Math.PI);
-//     ctx.fillStyle = "red";
-//     ctx.fill();
-//     ctx.closePath();
-//}
+const bricks = createBricks();
+const boardImg = document.getElementById('board') as HTMLImageElement;
+const board = new Board(new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100), boardImg);
+const ball = new Ball({ x: 200, y: 200 }, "/assets/ball.png");
+
+export function update(time: number) {
+    const delta = time - lastTime;
+    lastTime = time;
+    elapsed += delta;
+    if (elapsed > STEP_SIZE * 5) {
+        elapsed = STEP_SIZE * 5;
+    }
+
+    while (elapsed > STEP_SIZE) {
+        elapsed -= STEP_SIZE;
+        loop();
+    }
+    // if (isRunning)
+    requestAnimationFrame(update);
+}
+
+
+export function loop() {
+    canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
+    canvasView.drawBricks(bricks);
+    canvasView.drawBoard(board);
+    canvasView.drawBall(ball);
+
+    if (ball.position.y <= canvasView.canvas.height - 50) {
+        const velocity = new Vector(1, 2);
+        move(ball, velocity);
+    }
+}
