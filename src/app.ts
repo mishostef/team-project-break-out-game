@@ -1,18 +1,30 @@
+import { Ball } from "./figures/Ball";
 import { createBricks } from "./utils/brickFactory";
 import { BRICK_HEIGHT, BRICK_ROWS, BRICK_WIDTH } from "./utils/constants";
+import { Vector } from "./utils/vector";
+import { CanvasView } from "./view/CanvasView";
 const playBtn = document.getElementById('play-btn');
 
 playBtn.addEventListener('click', () => {
     document.getElementById('container').style.display = 'none';
+    document.getElementById('gameCanvas').style.display = 'block';
     startGame();
 })
 
-function startGame() {
-    const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-    canvas.style.display = 'block';
-    const ctx = canvas.getContext('2d');
+const canvasView = new CanvasView('gameCanvas');
 
+function startGame() {
+    const ctx = canvasView.getContext();
     drawBricks(ctx);
+
+    const ballPos: Vector = {
+        x: 400,
+        y: 450,
+    }
+
+    const ball = new Ball(ballPos, "/assets/ball.png");
+    canvasView.drawImage(ballPos, ball.getImage(), 30, 30);
+
 }
 
 function drawBricks(ctx: CanvasRenderingContext2D) {
@@ -21,16 +33,11 @@ function drawBricks(ctx: CanvasRenderingContext2D) {
     for (let r = 0; r < BRICK_ROWS; r++) {
         for (let c = 0; c < bricks.length; c++) {
             const brick = bricks[c];
-            drawImage(brick.position.x, brick.position.y, brick.getImage());
+            const pos: Vector = {
+                x: brick.position.x,
+                y: brick.position.y
+            }
+            canvasView.drawImage(pos , brick.getImage(), BRICK_WIDTH, BRICK_HEIGHT);
         }
-    }
-
-    function drawImage(x: number, y: number, source: string) {
-        const brick = new Image();
-        brick.src = source;
-
-        brick.onload = () => {
-            ctx.drawImage(brick, x, y, BRICK_WIDTH, BRICK_HEIGHT);
-        };
     }
 }
