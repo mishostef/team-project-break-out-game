@@ -1,19 +1,16 @@
 import { Ball } from "./figures/Ball";
 
-import { Ball as b } from "./gameObjects/Ball";
 import { Vector as v, Vector } from "./Geometry/Vector";
 import { CanvasView } from "./view/CanvasView"
 const playBtn = document.getElementById('play-btn');
 import { createBricks } from "./utils/brickFactory";
-import { Board } from "./gameObjects/Board";
+import { Board } from "./figures/Board";
 import { moveBall } from "./engine/move"
 const canvasView = new CanvasView('gameCanvas');
 let lastTime = 0;
 let elapsed = 0;
 const STEP_SIZE = 20;
 
-
-const bb = new b(new v(5, 5), new v(5, 5));
 const bricks = createBricks();
 const boardImg = document.getElementById('board') as HTMLImageElement;
 const board = new Board(new v(canvasView.canvas.width / 2, canvasView.canvas.height - 100), boardImg);
