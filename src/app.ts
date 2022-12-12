@@ -1,48 +1,52 @@
 import { Ball } from "./figures/Ball";
-import { createBricks } from "./utils/brickFactory";
-import { BRICK_HEIGHT, BRICK_ROWS, BRICK_WIDTH } from "./utils/constants";
+
 import { Ball as b } from "./gameObjects/Ball";
 import { Vector } from "./utils/vector";
-import { Vector as v} from "./Geometry/Vector";
-import {CanvasView} from "./view/CanvasView"
+import { Vector as v } from "./Geometry/Vector";
+import { CanvasView } from "./view/CanvasView"
 const playBtn = document.getElementById('play-btn');
 const canvasView = new CanvasView('gameCanvas');
+let lastTime = 0;
+let elapsed = 0;
+const STEP_SIZE = 20;
+const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
+canvas.style.display = 'block';
+const ctx = canvas.getContext('2d');
+const bb = new b(new v(5, 5), new v(5, 5));
 
 playBtn.addEventListener('click', () => {
     document.getElementById('container').style.display = 'none';
     startGame();
-})
+});
 
 function startGame() {
-    const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
     canvas.style.display = 'block';
-    const ctx = canvas.getContext('2d');
-   
- const bb = new b(new v(5,5),new v(5,5),ctx);
- bb.draw()
-    drawBricks(ctx);
+
+    update(performance.now());
+
 }
-
-function drawBricks(ctx: CanvasRenderingContext2D) {
-    const bricks = createBricks();
-
-    for (let r = 0; r < BRICK_ROWS; r++) {
-        for (let c = 0; c < bricks.length; c++) {
-            const brick = bricks[c];
-            const pos: Vector = {
-                x: brick.position.x,
-                y: brick.position.y
-            }
-            canvasView.drawImage(pos , brick.getImage(), BRICK_WIDTH, BRICK_HEIGHT);
-        }
+export function update(time: number) {
+    const delta = time - lastTime;
+    lastTime = time;
+    elapsed += delta;
+    if (elapsed > STEP_SIZE * 5) {
+        elapsed = STEP_SIZE * 5;
     }
 
-    function drawImage(x: number, y: number, source: string) {
-        const brick = new Image();
-        brick.src = source;
-
-        brick.onload = () => {
-            ctx.drawImage(brick, x, y, BRICK_WIDTH, BRICK_HEIGHT);
-        };
+    while (elapsed > STEP_SIZE) {
+        elapsed -= STEP_SIZE;
+        loop();
     }
+    // if (isRunning)
+    requestAnimationFrame(update);
 }
+
+export function loop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvasView.drawBricks();
+    bb.move();
+    canvasView.drawBall(bb);
+}
+
+
+
