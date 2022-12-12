@@ -3,13 +3,13 @@ body {
 }
 
 canvas {
-    border: 1px solid black;
+    border: 2px solid white;
 }
 
 #game {
     margin: auto;
     width: 10%;
-    padding: 150px 0;
+    padding: 100px 0;
 }
 
 #play-btn {
