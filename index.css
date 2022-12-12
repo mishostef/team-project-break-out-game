@@ -1,6 +1,38 @@
+body {
+    background-image: url('https://images.unsplash.com/photo-1604928844386-97d0ac6845fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDZ8fHxlbnwwfHx8fA%3D%3D&w=1000&q=80');
+}
+
 canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    border:1px solid red;
+    border: 1px solid black;
+}
+
+#game {
+    margin: auto;
+    width: 10%;
+    padding: 150px 0;
+}
+
+#play-btn {
+    padding: 6px;
+    width: 50%;
+    border-radius: 12px;
+    border: none;
+    background: orange;
+    color: white;
+    font-size: 22px;
+}
+
+#title {
+    text-align: center;
+    color: white;
+    font-size: 30px;
+}
+
+button {
+    margin: 10px 0;
+}
+
+div {
+    text-align: center;
+    margin: 200px 0;
 }
