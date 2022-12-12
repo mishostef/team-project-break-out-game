@@ -21,9 +21,6 @@ export class CanvasView {
     }
 
     drawBricks(bricks: Brick[]) {
-        console.log(bricks);
-        //  const bricks = createBricks();
-
         for (let r = 0; r < BRICK_ROWS; r++) {
             for (let c = 0; c < bricks.length; c++) {
                 const brick = bricks[c];

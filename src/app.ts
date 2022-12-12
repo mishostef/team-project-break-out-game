@@ -43,15 +43,19 @@ export function update(time: number) {
     // if (isRunning)
     requestAnimationFrame(update);
 }
+console.log(canvas.height);
 
 export function loop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     canvasView.drawBricks(bricks);
     canvasView.drawBall(ball);
+    
+    if (ball.position.y <= canvas.height - 50) {
+        ball.position.y += 2;
+        ball.position.x += 1;
+    }
 
-    ball.position.y += 2;
-    ball.position.x += 1;
     //bb.move();
     //canvasView.drawBall(bb);
 }
