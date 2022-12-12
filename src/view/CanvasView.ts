@@ -2,6 +2,7 @@ import { Vector } from "../utils/vector";
 import { BRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT } from "../utils/constants";
 import { createBricks } from "../utils/brickFactory";
 import { Ball as b } from "../gameObjects/Ball";
+import { Board } from "../gameObjects/Board";
 
 export class CanvasView {
     private ctx: CanvasRenderingContext2D;
@@ -11,6 +12,7 @@ export class CanvasView {
         public canvasSelector: string,
     ) {
         this.canvas = document.getElementById(canvasSelector) as HTMLCanvasElement;
+        this.canvas.style.display = 'block';
         this.ctx = this.canvas.getContext('2d');
     }
 
@@ -49,6 +51,13 @@ export class CanvasView {
         this.ctx.fill();
         this.ctx.closePath();
     }
+
+    drawBoard(board: Board) {
+        this.ctx.beginPath();
+        this.ctx.drawImage(board.image, board.position.x, board.position.y, 100, 20);
+        this.ctx.closePath();
+    }
+
     getContext(): CanvasRenderingContext2D {
         return this.ctx;
     }
