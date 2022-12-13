@@ -8,10 +8,23 @@ body {
 }
 
 canvas {
+    position: relative;
     border: 2px solid white;
     margin: 0px auto;
     width: 80%;
 }
+
+/* #gameOver {
+    position: absolute;
+    background-color: blueviolet;
+    height: 5vh;
+    width: 20vw;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 50px;
+    display: none;
+} */
 
 #game {
     margin: auto;
