@@ -76,21 +76,45 @@ export function loop() {
 
 function collisionDetector() {
     if (isBallCollidingWithBoard()) {
-        ballVelocity.y = -ballVelocity.y;
+        if (isBallHittingBoardEdges()) {
+            ballVelocity.x = 0.4 * ballVelocity.y
+            ballVelocity.y = -1.4 * ballVelocity.y;
+        } else {
+            ballVelocity.y = -ballVelocity.y;
+        }
     }
     if (isBallNearBricks()) {
         setHitBrickIndex();
-
     }
-    if (ball.position.y >= canvasView.canvas.height - BALL_DIAMETER) {///
+    if (isBallHittingTheFloor()) {///
         ballVelocity.y = -ballVelocity.y;
-    } else if (ball.position.y <= 0) {
+    } else if (isBallHittingTheCeiling()) {
         ballVelocity.y = Math.abs(ballVelocity.y);
-    } else if (ball.position.x > canvasView.canvas.width - BALL_DIAMETER) {
+    } else if (isBallHittingRightWall()) {
         ballVelocity.x = - ballVelocity.x;
-    } else if (ball.position.x <= 0) {
+    } else if (isBallHittingTheLeftWall()) {
         ballVelocity.x = Math.abs(ballVelocity.x);
     }
+}
+
+function isBallHittingBoardEdges() {
+    return (ball.position.x <= board.position.x - BRICK_WIDTH / 2 + BALL_DIAMETER / 2
+        || ball.position.x >= board.position.x + BRICK_WIDTH / 2 - BALL_DIAMETER / 2);
+}
+function isBallHittingTheLeftWall() {
+    return ball.position.x <= 0;
+}
+
+function isBallHittingRightWall() {
+    return ball.position.x > canvasView.canvas.width - BALL_DIAMETER;
+}
+
+function isBallHittingTheCeiling() {
+    return ball.position.y <= 0;
+}
+
+function isBallHittingTheFloor() {
+    return ball.position.y >= canvasView.canvas.height - BALL_DIAMETER;
 }
 
 function setHitBrickIndex() {
@@ -108,5 +132,7 @@ function isBallCollidingWithBoard() {
 }
 
 function isBallNearBricks() {
-    return (ball.position.y < BRICKS_END)
+    return (ball.position.y < BRICKS_END);
 }
+
+
