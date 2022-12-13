@@ -7,7 +7,7 @@ body {
 
 canvas {
     border: 2px solid white;
-    margin: auto;
+    margin: 0px auto;
     width: 80%;
 }
 
@@ -40,4 +40,14 @@ button {
 div {
     text-align: center;
     margin: 200px 0;
+}
+
+#details-box {
+    margin: 0;
+    display: none;
+}
+
+#score, #container-life {
+    color: white;
+    font-size: 22px;
 }
