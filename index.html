@@ -11,6 +11,11 @@
 </head>
 
 <body>
+    <div id="details-box">
+        <p id="score">Score: 0</p>
+        <p id="container-life">Life: <span id="life">3</span></p>
+    </div>
+
     <canvas id="gameCanvas" style="display: none;" width="1200" height="600"></canvas>
     <!-- <canvas id="startGame" width="800" height="600"></canvas>
     <canvas id="endGame" width="800" height="600"></canvas> -->
@@ -18,10 +23,16 @@
     <div id="container">
         <h1 id="title">Team Project - Breakout Game</h1>
 
+        <p id="description">
+            In the game, a layer of bricks lines the top third of the screen. A ball travels across the screen, bouncing off the top and side walls of the screen. When a brick is hit, the ball bounces away and the brick is destroyed. The player loses a turn when the ball touches the bottom of the screen. To prevent this from happening, the player has a movable paddle to bounce the ball upward and back into play. 
+        </p>
+        
         <div>
             <button id="play-btn">Play Game</button>
         </div>
     </div>
+
+   
 </body>
 
 </html>
