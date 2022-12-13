@@ -6,7 +6,7 @@ import { Vector } from "../Geometry/Vector";
 import { move } from "./move";
 import {
     BALL_DIAMETER,
-    BOARD_HEIGHT, BOARD_WIDTH, BRICKS_END, BRICK_BONUS_POINTS, BRICK_HEIGHT, BRICK_WIDTH,
+    BOARD_HEIGHT, BOARD_WIDTH, BRICK_BONUS_POINTS, BRICK_HEIGHT, BRICK_WIDTH,
     INITIAL_BALL_X, INITIAL_BALL_Y
 } from "../utils/constants";
 import {
@@ -19,7 +19,6 @@ const canvasView = new CanvasView('gameCanvas');
 let lastTime = 0;
 let elapsed = 0;
 const STEP_SIZE = 20;
-
 const bricks = createBricks();
 const boardImg = document.getElementById('board') as HTMLImageElement;
 const boardPosition = new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100);
@@ -30,6 +29,7 @@ let deleteBrickIndex = -1;
 let ballVelocity = new Vector(4, 4);
 let gameOver = false;
 let scorePoints = 0;
+let boardVelocity = new Vector(0, 0);
 
 window.addEventListener('keydown', event => {
     input[event.code] = true;
@@ -51,7 +51,6 @@ export function update(time: number) {
     if (elapsed > STEP_SIZE * 5) {
         elapsed = STEP_SIZE * 5;
     }
-
     while (elapsed > STEP_SIZE) {
         elapsed -= STEP_SIZE;
         gameLoop();
@@ -63,14 +62,14 @@ export function update(time: number) {
 
 
 export function gameLoop() {
-    let boardVelocity = new Vector(0, 0);
+    
     console.log('cavas.width=', canvasView.canvas.width);
     console.log("board.position.x", board.position.x);
     if (input['ArrowLeft'] && (board.position.x > 0)) {
-        boardVelocity.x = -5;
+        boardVelocity.x = -7;
         move(board, boardVelocity);
     } else if (input['ArrowRight'] && (board.position.x + BOARD_WIDTH < canvasView.canvas.width)) {
-        boardVelocity.x = 5;
+        boardVelocity.x = 7;
         move(board, boardVelocity);
     }
     canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
@@ -89,10 +88,11 @@ function collisionDetector() {
         setHitBrickIndex();
     }
     if (isBallHittingTheFloor(ball, canvasView)) {
-        ballVelocity.y = -ballVelocity.y;
-
         gameOver = true;
-        // alert("Game Over")
+        const gameoverDiv = document.getElementById("gameOver")
+        gameoverDiv.style.display = "block";
+        (gameoverDiv as HTMLDivElement).innerText = `Game over, score:${scorePoints}`;
+        document.getElementById('container').style.display = "block";
     } else if (isBallHittingTheCeiling(ball)) {
         ballVelocity.y = Math.abs(ballVelocity.y);
     } else if (isBallHittingRightWall(ball, canvasView)) {
@@ -104,12 +104,12 @@ function collisionDetector() {
 
 function handleBoardEdgeHit() {
     if (isBallHittingBoardEdges(ball, board)) {
-        if (Math.abs(ballVelocity.x) < 0.05 && Math.abs(ballVelocity.y) < 0.05) {
-            ballVelocity.x = 2;
-            ballVelocity.y = 2;
+        if (Math.abs(ballVelocity.x) <= 0.2 && Math.abs(ballVelocity.y) <= 0.2) {
+            ballVelocity.x = 4;
+            ballVelocity.y = 4;
         }
         ballVelocity.x = -2.4 * ballVelocity.y;
-        ballVelocity.y = -0.4 * ballVelocity.y;
+        ballVelocity.y = -0.6 * ballVelocity.y;
     } else {
         ballVelocity.y = -ballVelocity.y;
     }

@@ -14,8 +14,8 @@ canvas {
     width: 80%;
 }
 
-/* #gameOver {
-    position: absolute;
+#gameOver {
+    /* position: absolute;
     background-color: blueviolet;
     height: 5vh;
     width: 20vw;
@@ -23,8 +23,10 @@ canvas {
     right: 0;
     margin: auto;
     top: 50px;
-    display: none;
-} */
+    display: none; */
+    color: antiquewhite;
+    font-size: 50px;
+}
 
 #game {
     margin: auto;
