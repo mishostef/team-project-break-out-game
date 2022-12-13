@@ -22,10 +22,11 @@ const BALL_DIAMETER = 50;
 const input: { [code: string]: boolean } = {};
 const BRICKS_END = 170;
 let index = -1;
+let ballVelocity = new Vector(7, 7);
+
 
 window.addEventListener('keydown', event => {
     input[event.code] = true;
-    //alert(event.key)
 });
 window.addEventListener('keyup', event => {
     input[event.code] = false;
@@ -48,27 +49,26 @@ export function update(time: number) {
         elapsed -= STEP_SIZE;
         loop();
     }
-    // if (isRunning)
-    requestAnimationFrame(update);
+    if (bricks.length) {
+        requestAnimationFrame(update);
+    }
 }
 
-let ballVelocity = new Vector(1, 2)
 
 export function loop() {
-    let boardVelocity
-    if (input['ArrowLeft']) {
-        boardVelocity = new Vector(-5, 0);
+    let boardVelocity = new Vector(0, 0);
+    console.log('cavas.width=', canvasView.canvas.width)
+    if (input['ArrowLeft'] && (board.position.x > 0)) {
+        boardVelocity.x = -5;
         move(board, boardVelocity);
-    } else if (input['ArrowRight']) {
-        boardVelocity = new Vector(5, 0);
+    } else if (input['ArrowRight'] && (board.position.x + BOARD_WIDTH < canvasView.canvas.width)) {
+        boardVelocity.x = 5;
         move(board, boardVelocity);
     }
     canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
-
     canvasView.drawBricks(bricks);
     canvasView.drawBoard(board);
     canvasView.drawBall(ball);
-
     collisionDetector();
 
     move(ball, ballVelocity);
@@ -77,8 +77,13 @@ export function loop() {
 function collisionDetector() {
     if (isBallCollidingWithBoard()) {
         if (isBallHittingBoardEdges()) {
-            ballVelocity.x = 0.4 * ballVelocity.y
-            ballVelocity.y = -1.4 * ballVelocity.y;
+            if (Math.abs(ballVelocity.x) < 0.05 && Math.abs(ballVelocity.y) < 0.05) {
+                ballVelocity.x = 2
+                ballVelocity.y = 2;
+            }
+            ballVelocity.x = -2.4 * ballVelocity.y
+            ballVelocity.y = -0.4 * ballVelocity.y;
+
         } else {
             ballVelocity.y = -ballVelocity.y;
         }
