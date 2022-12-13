@@ -8,3 +8,5 @@ export const INITIAL_START_BRICK_LEFT = 10;
 export const INITIAL_START_BRICK_RIGHT = 10;
 export const INCREMENT_LEFT_BRICK = 120;
 export const INCREEMNT_DOWN_BRICK = 60;
+export const BOARD_WIDTH = 100;
+export const BOARD_HEIGHT = 20;
