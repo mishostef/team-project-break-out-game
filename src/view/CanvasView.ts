@@ -1,5 +1,12 @@
 import { Vector } from "../utils/vector";
-import { BRICK_ROWS, BRICK_WIDTH, BRICK_HEIGHT, BOARD_WIDTH, BOARD_HEIGHT } from "../utils/constants";
+import {
+    BRICK_ROWS,
+    BRICK_WIDTH,
+    BRICK_HEIGHT,
+    BOARD_WIDTH,
+    BOARD_HEIGHT,
+    BALL_WIDTH,BALL_HEIGHT
+} from "../utils/constants";
 import { Ball } from "../figures/Ball";
 import { Brick } from "../figures/Brick";
 import { Board } from "../figures/Board";
@@ -34,7 +41,7 @@ export class CanvasView {
     }
 
     drawBall(ball: Ball) {
-        this.drawImage(ball.position, ball.getImage(), 40, 40);
+        this.drawImage(ball.position, ball.getImage(), BALL_WIDTH, BALL_HEIGHT);
     }
 
     drawBoard(board: Board) {
