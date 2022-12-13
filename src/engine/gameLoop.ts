@@ -94,10 +94,10 @@ function collisionDetector() {
 }
 
 function setHitBrickIndex() {
-    index = bricks.findIndex(b => ((b.position.y - BRICK_HEIGHT / 2 <= ball.position.y)
-        && (b.position.y + BRICK_HEIGHT / 2 >= ball.position.y)
-        && (b.position.x + BRICK_WIDTH / 2 >= ball.position.x)
-        && (b.position.x - BRICK_WIDTH / 2 >= ball.position.x)));
+    index = bricks.findIndex(b => ((b.position.y - BRICK_HEIGHT / 2 <= ball.position.y - BALL_DIAMETER / 2)
+        && (b.position.y + BRICK_HEIGHT / 2 >= ball.position.y - BALL_DIAMETER / 2)
+        && (b.position.x + BRICK_WIDTH / 2 >= ball.position.x - BALL_DIAMETER / 2)
+        && (b.position.x - BRICK_WIDTH / 2 <= ball.position.x - BALL_DIAMETER / 2)));
 }
 
 function isBallCollidingWithBoard() {
