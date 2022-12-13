@@ -12,7 +12,7 @@ export class CanvasView {
         public canvasSelector: string,
     ) {
         this.canvas = document.getElementById(canvasSelector) as HTMLCanvasElement;
-        this.canvas.style.display = 'block';
+        //this.canvas.style.display = 'block';
         this.ctx = this.canvas.getContext('2d');
     }
 
