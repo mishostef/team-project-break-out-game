@@ -4,6 +4,8 @@ import { Board } from "../figures/Board";
 import { Ball } from "../figures/Ball";
 import { Vector } from "../Geometry/Vector";
 import { move } from "./move";
+import { BOARD_HEIGHT, BOARD_WIDTH } from "../utils/constants";
+
 
 const canvasView = new CanvasView('gameCanvas');
 let lastTime = 0;
@@ -15,6 +17,7 @@ const boardImg = document.getElementById('board') as HTMLImageElement;
 const boardPosition = new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100);
 const board = new Board(boardPosition, boardImg);
 const ball = new Ball({ x: 200, y: 200 }, "/assets/ball.png");
+const BALL_DIAMETER = 50;
 const input: { [code: string]: boolean } = {};
 
 
@@ -41,8 +44,6 @@ export function update(time: number) {
     requestAnimationFrame(update);
 }
 
-//let y = 2;
-//let x = 1;
 let ballVelocity = new Vector(1, 2)
 
 export function loop() {
@@ -61,16 +62,22 @@ export function loop() {
 
     collisionDetector();
 
-    //const velocity = new Vector(x, y);
     move(ball, ballVelocity);
 }
 
 function collisionDetector() {
-    if (ball.position.y >= canvasView.canvas.height - 50) {
+    if (ball.position.y <= board.position.y - BOARD_HEIGHT / 2 - BALL_DIAMETER / 2
+        && ball.position.y > board.position.y - BOARD_HEIGHT / 2 - BALL_DIAMETER
+        && ball.position.x <= board.position.x + BOARD_WIDTH / 2
+        && ball.position.x >= board.position.x - BOARD_WIDTH / 2) {
+        ballVelocity.y = -ballVelocity.y;
+        //alert('hello');
+    }
+    if (ball.position.y >= canvasView.canvas.height - BALL_DIAMETER) {///
         ballVelocity.y = -ballVelocity.y;
     } else if (ball.position.y <= 0) {
         ballVelocity.y = Math.abs(ballVelocity.y);
-    } else if (ball.position.x > canvasView.canvas.width - 50) {
+    } else if (ball.position.x > canvasView.canvas.width - BALL_DIAMETER) {
         ballVelocity.x = - ballVelocity.x;
     } else if (ball.position.x <= 0) {
         ballVelocity.x = Math.abs(ballVelocity.x);
