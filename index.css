@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 body {
     background-image: url('https://images.unsplash.com/photo-1604928844386-97d0ac6845fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDZ8fHxlbnwwfHx8fA%3D%3D&w=1000&q=80');
     background-repeat: no-repeat;
@@ -39,7 +41,7 @@ button {
 
 div {
     text-align: center;
-    margin: 200px 0;
+    margin: 100px 0;
 }
 
 #details-box {
@@ -49,5 +51,13 @@ div {
 
 #score, #container-life {
     color: white;
+    font-size: 22px;
+}
+
+#description {
+    color: white;
+    max-width: 38em;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
     font-size: 22px;
 }
