@@ -4,7 +4,7 @@ import { Board } from "../figures/Board";
 import { Ball } from "../figures/Ball";
 import { Vector } from "../Geometry/Vector";
 import { move } from "./move";
-import { BOARD_HEIGHT, BOARD_WIDTH } from "../utils/constants";
+import { BOARD_HEIGHT, BOARD_WIDTH, BRICK_HEIGHT, BRICK_WIDTH } from "../utils/constants";
 
 
 const canvasView = new CanvasView('gameCanvas');
@@ -16,9 +16,10 @@ const bricks = createBricks();
 const boardImg = document.getElementById('board') as HTMLImageElement;
 const boardPosition = new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100);
 const board = new Board(boardPosition, boardImg);
-const ball = new Ball({ x: 200, y: 200 }, "/assets/ball.png");
+const ball = new Ball({ x: 200, y: canvasView.canvas.height / 2 }, "/assets/ball.png");
 const BALL_DIAMETER = 50;
 const input: { [code: string]: boolean } = {};
+const BRICKS_END = 170;
 
 
 window.addEventListener('keydown', event => {
@@ -66,12 +67,11 @@ export function loop() {
 }
 
 function collisionDetector() {
-    if (ball.position.y <= board.position.y - BOARD_HEIGHT / 2 - BALL_DIAMETER / 2
-        && ball.position.y > board.position.y - BOARD_HEIGHT / 2 - BALL_DIAMETER
-        && ball.position.x <= board.position.x + BOARD_WIDTH / 2
-        && ball.position.x >= board.position.x - BOARD_WIDTH / 2) {
+    if (isBallCollidingWithBoard()) {
         ballVelocity.y = -ballVelocity.y;
-        //alert('hello');
+    }
+    if (isBallHittingABrick()) {
+        removeHitBrick();
     }
     if (ball.position.y >= canvasView.canvas.height - BALL_DIAMETER) {///
         ballVelocity.y = -ballVelocity.y;
@@ -82,4 +82,26 @@ function collisionDetector() {
     } else if (ball.position.x <= 0) {
         ballVelocity.x = Math.abs(ballVelocity.x);
     }
+}
+
+function removeHitBrick() {
+    const index = bricks.findIndex(b => ((b.position.y - BRICK_HEIGHT / 2 <= ball.position.y)
+        && (b.position.y + BRICK_HEIGHT / 2 >= ball.position.y)
+        && (b.position.x + BRICK_WIDTH / 2 >= ball.position.x)
+        && (b.position.x - BRICK_WIDTH / 2 >= ball.position.x)));
+    if (index != -1) {
+        bricks.splice(index, 1);
+    }
+    ballVelocity.x = Math.abs(ballVelocity.x);
+}
+
+function isBallCollidingWithBoard() {
+    return (ball.position.y <= board.position.y - BOARD_HEIGHT / 2 - BALL_DIAMETER / 2
+        && ball.position.y > board.position.y - BOARD_HEIGHT / 2 - BALL_DIAMETER
+        && ball.position.x <= board.position.x + BOARD_WIDTH / 2
+        && ball.position.x >= board.position.x - BOARD_WIDTH / 2)
+}
+
+function isBallHittingABrick() {
+    return (ball.position.y < BRICKS_END)
 }
