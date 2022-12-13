@@ -4,7 +4,7 @@ import { Board } from "../figures/Board";
 import { Ball } from "../figures/Ball";
 import { Vector } from "../Geometry/Vector";
 import { move } from "./move";
-import { BOARD_HEIGHT, BOARD_WIDTH } from "../utils/constants";
+import { BOARD_HEIGHT, BOARD_WIDTH, INITIAL_BALL_X, INITIAL_BALL_Y } from "../utils/constants";
 
 
 const canvasView = new CanvasView('gameCanvas');
@@ -16,7 +16,7 @@ const bricks = createBricks();
 const boardImg = document.getElementById('board') as HTMLImageElement;
 const boardPosition = new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100);
 const board = new Board(boardPosition, boardImg);
-const ball = new Ball({ x: 200, y: 200 }, "/assets/ball.png");
+const ball = new Ball({ x: INITIAL_BALL_X, y: INITIAL_BALL_Y }, "/assets/ball.png");
 const BALL_DIAMETER = 50;
 const input: { [code: string]: boolean } = {};
 
