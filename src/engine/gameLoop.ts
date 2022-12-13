@@ -41,8 +41,9 @@ export function update(time: number) {
     requestAnimationFrame(update);
 }
 
-let y = 2;
-let x = 1;
+//let y = 2;
+//let x = 1;
+let ballVelocity = new Vector(1, 2)
 
 export function loop() {
     let boardVelocity
@@ -58,16 +59,20 @@ export function loop() {
     canvasView.drawBoard(board);
     canvasView.drawBall(ball);
 
-    if (ball.position.y >= canvasView.canvas.height - 50) {
-        y = -y;
-    } else if (ball.position.y <= 0) {
-        y = Math.abs(y);
-    } else if (ball.position.x > canvasView.canvas.width - 50) {
-        x = -x;
-    } else if (ball.position.x <= 0) {
-        x = Math.abs(x);
-    }
+    collisionDetector();
 
-    const velocity = new Vector(x, y);
-    move(ball, velocity);
+    //const velocity = new Vector(x, y);
+    move(ball, ballVelocity);
+}
+
+function collisionDetector() {
+    if (ball.position.y >= canvasView.canvas.height - 50) {
+        ballVelocity.y = -ballVelocity.y;
+    } else if (ball.position.y <= 0) {
+        ballVelocity.y = Math.abs(ballVelocity.y);
+    } else if (ball.position.x > canvasView.canvas.width - 50) {
+        ballVelocity.x = - ballVelocity.x;
+    } else if (ball.position.x <= 0) {
+        ballVelocity.x = Math.abs(ballVelocity.x);
+    }
 }
