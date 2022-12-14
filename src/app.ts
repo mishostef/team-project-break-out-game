@@ -4,6 +4,7 @@
 import { move } from "./engine/move";
 import { Ball } from "./figures/Ball";
 import { Board } from "./figures/Board";
+import { Brick } from "./figures/Brick";
 import { Vector } from "./Geometry/Vector";
 import { createBricks } from "./utils/brickFactory";
 import {
@@ -88,7 +89,9 @@ export function update(time: number) {
     elapsed += delta;
     let deleteBrickIndex = isBallNearBricks(ball) ? getHitBrickIndex() : -1;
     if (deleteBrickIndex != -1) {
-        ballVelocity.y = -ballVelocity.y;
+        const brick = bricks[deleteBrickIndex];
+        changeBallDirection(ball, brick);
+        // ballVelocity.y = -ballVelocity.y;
         bricks.splice(deleteBrickIndex, 1);
         scorePoints += BRICK_BONUS_POINTS;
     }
@@ -179,4 +182,32 @@ export function isBallCollidingWithBoard() {
         && (ball.position.y + BALL_DIAMETER / 2 >= board.position.y)
         && (ball.position.x <= board.position.x + BOARD_WIDTH + BALL_DIAMETER / 2)
         && (ball.position.x >= board.position.x - BALL_DIAMETER / 2))
+}
+
+function changeBallDirection(ball: Ball, brick: Brick) {
+    const BRICK_DIAGONAL = Math.sqrt(BRICK_HEIGHT ** 2 + BRICK_WIDTH ** 2);
+    const brickCenterX = brick.position.x + BRICK_WIDTH / 2;
+    const brickCenterY = brick.position.y + BRICK_HEIGHT / 2;
+    const ballCenterX = ball.position.x + BALL_DIAMETER / 2;
+    const ballCenterY = ball.position.y + BALL_DIAMETER / 2;
+    const deltaY = (BRICK_HEIGHT * BALL_DIAMETER / 2) / BRICK_DIAGONAL;
+    const deltaX = (BRICK_WIDTH * BALL_DIAMETER / 2) / BRICK_DIAGONAL;
+    const minYSideHit = brick.position.y + deltaY;
+    const maxYSideHit = brick.position.y + BRICK_HEIGHT - deltaY;
+    const minLeftXSideHit = brick.position.x - deltaX;
+    const maxLeftXSideHit = brick.position.x + deltaX;
+    const isBallComingFromButtomLeft = ((ballCenterX > minLeftXSideHit)
+        && (ballCenterX < maxLeftXSideHit)
+        && (ballCenterY > minYSideHit)
+        && (ballCenterY < maxYSideHit));
+    const isBallComingFromButtomRight = ((ballCenterX > minLeftXSideHit + BRICK_WIDTH)
+        && (ballCenterX < maxLeftXSideHit + BRICK_WIDTH)
+        && (ballCenterY > minYSideHit)
+        && (ballCenterY < maxYSideHit));
+    if ((isBallComingFromButtomLeft && ballVelocity.x > 0) || (isBallComingFromButtomRight && ballVelocity.x < 0)) {
+        ballVelocity.x *= -1;
+    } else {
+        ballVelocity.y *= -1;
+    }
+
 }
