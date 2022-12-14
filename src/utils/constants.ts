@@ -19,7 +19,7 @@ export const BALL_WIDTH = 40;
 export const BALL_HEIGHT = 40;
 export const INITIAL_BALL_X = 200;
 export const INITIAL_BALL_Y = 200;
-export const BALL_DIAMETER = 50;
+export const BALL_DIAMETER = 40;
 
 //MISCELLANEOUS
 export const BRICK_BONUS_POINTS = 10;

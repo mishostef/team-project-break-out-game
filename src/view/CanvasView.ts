@@ -5,7 +5,7 @@ import {
     BRICK_HEIGHT,
     BOARD_WIDTH,
     BOARD_HEIGHT,
-    BALL_WIDTH,BALL_HEIGHT
+    BALL_DIAMETER,
 } from "../utils/constants";
 import { Ball } from "../figures/Ball";
 import { Brick } from "../figures/Brick";
@@ -19,7 +19,6 @@ export class CanvasView {
         public canvasSelector: string,
     ) {
         this.canvas = document.getElementById(canvasSelector) as HTMLCanvasElement;
-        //this.canvas.style.display = 'block';
         this.ctx = this.canvas.getContext('2d');
     }
 
@@ -41,7 +40,7 @@ export class CanvasView {
     }
 
     drawBall(ball: Ball) {
-        this.drawImage(ball.position, ball.getImage(), BALL_WIDTH, BALL_HEIGHT);
+        this.drawImage(ball.position, ball.getImage(), BALL_DIAMETER, BALL_DIAMETER);
     }
 
     drawBoard(board: Board) {

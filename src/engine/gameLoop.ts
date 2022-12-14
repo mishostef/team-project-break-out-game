@@ -26,7 +26,7 @@ const board = new Board(boardPosition, boardImg);
 const ball = new Ball({ x: INITIAL_BALL_X, y: INITIAL_BALL_Y }, "/assets/ball.png");
 const input: { [code: string]: boolean } = {};
 let deleteBrickIndex = -1;
-let ballVelocity = new Vector(4, 4);
+let ballVelocity = new Vector(3, 3);
 let gameOver = false;
 let scorePoints = 0;
 let boardVelocity = new Vector(0, 0);
@@ -43,10 +43,11 @@ export function update(time: number) {
     lastTime = time;
     elapsed += delta;
     if (deleteBrickIndex != -1) {
+        ballVelocity.y = -ballVelocity.y;
         bricks.splice(deleteBrickIndex, 1);
         scorePoints += BRICK_BONUS_POINTS;
         deleteBrickIndex = -1;
-        ballVelocity.y = -ballVelocity.y;
+        // ballVelocity.y = -ballVelocity.y;
     }
     if (elapsed > STEP_SIZE * 5) {
         elapsed = STEP_SIZE * 5;
@@ -54,6 +55,7 @@ export function update(time: number) {
     while (elapsed > STEP_SIZE) {
         elapsed -= STEP_SIZE;
         gameLoop();
+        document["newgame"] = true;
     }
     if (bricks.length && !gameOver) {
         requestAnimationFrame(update);
@@ -62,7 +64,7 @@ export function update(time: number) {
 
 
 export function gameLoop() {
-    
+
     console.log('cavas.width=', canvasView.canvas.width);
     console.log("board.position.x", board.position.x);
     if (input['ArrowLeft'] && (board.position.x > 0)) {
@@ -89,10 +91,7 @@ function collisionDetector() {
     }
     if (isBallHittingTheFloor(ball, canvasView)) {
         gameOver = true;
-        const gameoverDiv = document.getElementById("gameOver")
-        gameoverDiv.style.display = "block";
-        (gameoverDiv as HTMLDivElement).innerText = `Game over, score:${scorePoints}`;
-        document.getElementById('container').style.display = "block";
+        showGameOverMessage();
     } else if (isBallHittingTheCeiling(ball)) {
         ballVelocity.y = Math.abs(ballVelocity.y);
     } else if (isBallHittingRightWall(ball, canvasView)) {
@@ -102,22 +101,23 @@ function collisionDetector() {
     }
 }
 
+function showGameOverMessage() {
+    const gameoverDiv = document.getElementById("gameOver");
+    gameoverDiv.style.display = "block";
+    (gameoverDiv as HTMLDivElement).innerText = `Game over, score:${scorePoints}`;
+    document.getElementById('container').style.display = "block";
+}
+
 function handleBoardEdgeHit() {
     if (isBallHittingBoardEdges(ball, board)) {
-        if (Math.abs(ballVelocity.x) <= 0.2 && Math.abs(ballVelocity.y) <= 0.2) {
-            ballVelocity.x = 4;
-            ballVelocity.y = 4;
-        }
-        ballVelocity.x = -2.4 * ballVelocity.y;
-        ballVelocity.y = -0.6 * ballVelocity.y;
-    } else {
-        ballVelocity.y = -ballVelocity.y;
+        ballVelocity.x += boardVelocity.x;
     }
+    ballVelocity.y = -ballVelocity.y;
 }
 
 export function isBallHittingBoardEdges(ball: Ball, board: Board) {
-    return (ball.position.x <= board.position.x - BRICK_WIDTH / 2 + BALL_DIAMETER / 2
-        || ball.position.x >= board.position.x + BRICK_WIDTH / 2 - BALL_DIAMETER / 2);
+    return (ball.position.x <= board.position.x + BOARD_WIDTH
+        || ball.position.x >= board.position.x - BALL_DIAMETER);
 }
 
 function setHitBrickIndex() {
@@ -128,8 +128,12 @@ function setHitBrickIndex() {
 }
 
 function isBallCollidingWithBoard() {
-    return (ball.position.y <= board.position.y + BOARD_HEIGHT / 2 - BALL_DIAMETER / 2
-        && ball.position.y >= board.position.y - BOARD_HEIGHT / 2 - BALL_DIAMETER / 2
-        && ball.position.x <= board.position.x + BOARD_WIDTH / 2
-        && ball.position.x >= board.position.x - BOARD_WIDTH / 2)
+    console.log(ball.position.y + BALL_DIAMETER / 2 <= board.position.y + BOARD_HEIGHT);
+    console.log(ball.position.y + BALL_DIAMETER / 2 >= board.position.y);
+    console.log(ball.position.x <= board.position.x + BOARD_WIDTH);
+    console.log(ball.position.x >= board.position.x - BALL_DIAMETER);
+    return ((ball.position.y + BALL_DIAMETER / 2 <= board.position.y + BOARD_HEIGHT)
+        && (ball.position.y + BALL_DIAMETER / 2 >= board.position.y)
+        && (ball.position.x <= board.position.x + BOARD_WIDTH)
+        && (ball.position.x >= board.position.x - BALL_DIAMETER))
 }

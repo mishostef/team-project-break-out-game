@@ -15,15 +15,6 @@ canvas {
 }
 
 #gameOver {
-    /* position: absolute;
-    background-color: blueviolet;
-    height: 5vh;
-    width: 20vw;
-    left: 0;
-    right: 0;
-    margin: auto;
-    top: 50px;
-    display: none; */
     color: antiquewhite;
     font-size: 50px;
 }
@@ -32,6 +23,7 @@ canvas {
     margin: auto;
     width: 10%;
     padding: 100px 0;
+    display: none;
 }
 
 .btn {
