@@ -73,7 +73,7 @@ export function update(time: number) {
     const delta = time - lastTime;
     lastTime = time;
     elapsed += delta;
-    let deleteBrickIndex =isBallNearBricks(ball)?  getHitBrickIndex():-1;
+    let deleteBrickIndex = isBallNearBricks(ball) ? getHitBrickIndex() : -1;
     if (deleteBrickIndex != -1) {
         ballVelocity.y = -ballVelocity.y;
         bricks.splice(deleteBrickIndex, 1);
@@ -151,7 +151,7 @@ export function getHitBrickIndex() {
         && (brick.position.x - BRICK_WIDTH / 2 <= ball.position.x - BALL_DIAMETER / 2)));
 }
 
-function isBallCollidingWithBoard() {
+export function isBallCollidingWithBoard() {
     console.log(ball.position.y + BALL_DIAMETER / 2 <= board.position.y + BOARD_HEIGHT);
     console.log(ball.position.y + BALL_DIAMETER / 2 >= board.position.y);
     console.log(ball.position.x <= board.position.x + BOARD_WIDTH);
