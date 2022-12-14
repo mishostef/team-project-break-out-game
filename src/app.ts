@@ -6,6 +6,7 @@ import { Ball } from "./figures/Ball";
 import { Board } from "./figures/Board";
 import { Brick } from "./figures/Brick";
 import { Vector } from "./Geometry/Vector";
+import { changeBallDirection } from "./physics/movement";
 import { createBricks } from "./utils/brickFactory";
 import {
     INITIAL_BALL_X, INITIAL_BALL_Y, BRICK_BONUS_POINTS,
@@ -80,6 +81,7 @@ function startGame() {
     bricks = createBricks();
     board = new Board(boardPosition, boardImg);
     ball = new Ball({ x: INITIAL_BALL_X, y: INITIAL_BALL_Y }, "/assets/ball.png");
+    ballVelocity = new Vector(3, 3);
     update(performance.now());
 }
 
@@ -90,7 +92,7 @@ export function update(time: number) {
     let deleteBrickIndex = isBallNearBricks(ball) ? getHitBrickIndex() : -1;
     if (deleteBrickIndex != -1) {
         const brick = bricks[deleteBrickIndex];
-        changeBallDirection(ball, brick);
+        changeBallDirection(ball, brick, ballVelocity);
         // ballVelocity.y = -ballVelocity.y;
         bricks.splice(deleteBrickIndex, 1);
         scorePoints += BRICK_BONUS_POINTS;
@@ -127,7 +129,7 @@ export function gameLoop() {
 
 export function collisionDetector() {
     if (isBallCollidingWithBoard()) {
-        handleBoardHit();
+        handleBoardHit(ball);
     }
     if (isBallHittingTheFloor(ball, canvasView)) {
         gameOver = true;
@@ -148,11 +150,19 @@ export function showGameOverMessage() {
 
 }
 
-export function handleBoardHit() {
-    if (isBallHittingBoardEdges(ball, board)) {
-        ballVelocity.x += boardVelocity.x;
+export function handleBoardHit(ball: Ball) {
+    const currentAngle = Math.atan2(ball.position.y, ball.position.x);
+    const coeff = (ball.position.x) / (BOARD_WIDTH / 2);
+    const angleToAdd = Math.PI / 20;
+    const nextAngle = coeff * angleToAdd + currentAngle;
+    const yOffset = 5;
+    if (nextAngle < Math.PI / 3) {
+        ballVelocity.x = Math.sin(nextAngle);
+        ballVelocity.y = Math.cos(nextAngle);
+    } else {
+        ballVelocity.y = -ballVelocity.y;
     }
-    ballVelocity.y = -ballVelocity.y;
+    ball.position.y -= yOffset;
 }
 
 export function isBallHittingBoardEdges(ball: Ball, board: Board) {
@@ -178,36 +188,10 @@ export function isBallCollidingWithBoard() {
     console.log(ball.position.y + BALL_DIAMETER / 2 >= board.position.y);
     console.log(ball.position.x <= board.position.x + BOARD_WIDTH);
     console.log(ball.position.x >= board.position.x - BALL_DIAMETER);
-    return ((ball.position.y + BALL_DIAMETER / 2 <= board.position.y + BOARD_HEIGHT)
-        && (ball.position.y + BALL_DIAMETER / 2 >= board.position.y)
-        && (ball.position.x <= board.position.x + BOARD_WIDTH + BALL_DIAMETER / 2)
-        && (ball.position.x >= board.position.x - BALL_DIAMETER / 2))
+    return ((ball.position.y + BALL_DIAMETER / 2 <= board.position.y)
+        && (ball.position.y + BALL_DIAMETER / 2 >= board.position.y - 20)
+        && (ball.position.x - 3 * BALL_DIAMETER / 4 <= board.position.x + BOARD_WIDTH)
+        && (ball.position.x + 3 * BALL_DIAMETER / 4 >= board.position.x));
 }
 
-function changeBallDirection(ball: Ball, brick: Brick) {
-    const BRICK_DIAGONAL = Math.sqrt(BRICK_HEIGHT ** 2 + BRICK_WIDTH ** 2);
-    const brickCenterX = brick.position.x + BRICK_WIDTH / 2;
-    const brickCenterY = brick.position.y + BRICK_HEIGHT / 2;
-    const ballCenterX = ball.position.x + BALL_DIAMETER / 2;
-    const ballCenterY = ball.position.y + BALL_DIAMETER / 2;
-    const deltaY = (BRICK_HEIGHT * BALL_DIAMETER / 2) / BRICK_DIAGONAL;
-    const deltaX = (BRICK_WIDTH * BALL_DIAMETER / 2) / BRICK_DIAGONAL;
-    const minYSideHit = brick.position.y + deltaY;
-    const maxYSideHit = brick.position.y + BRICK_HEIGHT - deltaY;
-    const minLeftXSideHit = brick.position.x - deltaX;
-    const maxLeftXSideHit = brick.position.x + deltaX;
-    const isBallComingFromButtomLeft = ((ballCenterX > minLeftXSideHit)
-        && (ballCenterX < maxLeftXSideHit)
-        && (ballCenterY > minYSideHit)
-        && (ballCenterY < maxYSideHit));
-    const isBallComingFromButtomRight = ((ballCenterX > minLeftXSideHit + BRICK_WIDTH)
-        && (ballCenterX < maxLeftXSideHit + BRICK_WIDTH)
-        && (ballCenterY > minYSideHit)
-        && (ballCenterY < maxYSideHit));
-    if ((isBallComingFromButtomLeft && ballVelocity.x > 0) || (isBallComingFromButtomRight && ballVelocity.x < 0)) {
-        ballVelocity.x *= -1;
-    } else {
-        ballVelocity.y *= -1;
-    }
 
-}
