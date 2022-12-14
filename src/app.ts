@@ -1,4 +1,6 @@
 
+//import { update } from "./engine/gameLoop";
+
 import { move } from "./engine/move";
 import { Ball } from "./figures/Ball";
 import { Board } from "./figures/Board";
@@ -38,8 +40,8 @@ window.addEventListener('keyup', event => {
 });
 
 
-
 const playBtn = document.getElementById('play-btn');
+let isPlayMusic = false;
 
 document.getElementById("new-game").addEventListener("click", () => {
     gameOver = false;
@@ -49,6 +51,13 @@ playBtn.addEventListener('click', () => {
     document.getElementById('container').style.display = 'none';
     document.getElementById('gameCanvas').style.display = 'block';
     startGame();
+
+    if (isPlayMusic) {
+        const music = new Audio("../assets/music.mp3");
+        music.volume = 0.1;
+
+        music.play();
+    }
 });
 
 document.getElementById('setting-btn').addEventListener('click', () => {
@@ -59,6 +68,10 @@ document.getElementById('setting-btn').addEventListener('click', () => {
     document.getElementById('back-btn').addEventListener('click', () => {
         settingsContainer.style.display = 'none';
         container.style.display = 'block';
+    })
+
+    document.getElementById('play-sound-btn').addEventListener('click', () => {
+        isPlayMusic = true;
     })
 })
 
