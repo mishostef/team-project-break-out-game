@@ -124,7 +124,7 @@ export function gameLoop() {
 
 export function collisionDetector() {
     if (isBallCollidingWithBoard()) {
-        handleBoardEdgeHit();
+        handleBoardHit();
     }
     if (isBallHittingTheFloor(ball, canvasView)) {
         gameOver = true;
@@ -145,7 +145,7 @@ export function showGameOverMessage() {
 
 }
 
-export function handleBoardEdgeHit() {
+export function handleBoardHit() {
     if (isBallHittingBoardEdges(ball, board)) {
         ballVelocity.x += boardVelocity.x;
     }
@@ -158,10 +158,16 @@ export function isBallHittingBoardEdges(ball: Ball, board: Board) {
 }
 
 export function getHitBrickIndex() {
-    return bricks.findIndex(brick => ((brick.position.y - BRICK_HEIGHT / 2 <= ball.position.y - BALL_DIAMETER / 2)
-        && (brick.position.y + BRICK_HEIGHT / 2 >= ball.position.y - BALL_DIAMETER / 2)
-        && (brick.position.x + BRICK_WIDTH / 2 >= ball.position.x - BALL_DIAMETER / 2)
-        && (brick.position.x - BRICK_WIDTH / 2 <= ball.position.x - BALL_DIAMETER / 2)));
+    return bricks.findIndex(brick => {
+        const left = brick.position.x - BALL_DIAMETER / 2;
+        const right = brick.position.x + BRICK_WIDTH + BALL_DIAMETER / 2;
+        const top = brick.position.y - BALL_DIAMETER / 2;
+        const bottom = brick.position.y + BRICK_HEIGHT + BALL_DIAMETER / 2;
+        return ((ball.position.x >= left)
+            && (ball.position.x <= right)
+            && (ball.position.y >= top)
+            && (ball.position.y <= bottom));
+    });
 }
 
 export function isBallCollidingWithBoard() {
