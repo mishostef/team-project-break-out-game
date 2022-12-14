@@ -11,7 +11,7 @@ export const INCREEMNT_DOWN_BRICK = 60;
 export const BRICKS_END = 170;
 
 // BOARD
-export const BOARD_WIDTH = 100;
+export const BOARD_WIDTH = 120;
 export const BOARD_HEIGHT = 20;
 
 //BALL
