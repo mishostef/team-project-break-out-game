@@ -104,9 +104,16 @@ document.getElementById("setting-btn").addEventListener("click", () => {
 });
 
 document.getElementById("level").addEventListener("click", (e) => {
-  const input = (e.target as HTMLInputElement).id;
+  const input = (e.target as HTMLInputElement);
+  const level = input.id;
 
-  switch (input) {
+  document.querySelectorAll('input').forEach((input) => {
+    input.checked = false;
+  })
+
+  input.checked = true;
+
+  switch (level) {
     case "easy":
       GAME_DIFFICULTY = EASY_LEVEl;
       break;
