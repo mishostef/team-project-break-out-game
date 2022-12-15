@@ -5,9 +5,14 @@ import { Ball } from "../figures/Ball";
 import { Vector } from "../Geometry/Vector";
 import { move } from "./move";
 import {
-    BALL_DIAMETER,
-    BOARD_HEIGHT, BOARD_WIDTH, BRICK_BONUS_POINTS, BRICK_HEIGHT, BRICK_WIDTH,
-    INITIAL_BALL_X, INITIAL_BALL_Y
+  BALL_DIAMETER,
+  BOARD_HEIGHT,
+  BOARD_WIDTH,
+  BRICK_BONUS_POINTS,
+  BRICK_HEIGHT,
+  BRICK_WIDTH,
+  INITIAL_BALL_X,
+  INITIAL_BALL_Y,
 } from "../utils/constants";
 import {
     isBallHittingTheFloor, isBallHittingTheCeiling, isBallHittingRightWall,
@@ -16,17 +21,15 @@ import {
 import { showGameOverMessage } from "../app";
 import { handleBoardHit } from "../physics/movement";
 
-
 const canvasView = new CanvasView("gameCanvas");
 
 const input: { [code: string]: boolean } = {};
 
-
-window.addEventListener('keydown', event => {
-    input[event.code] = true;
+window.addEventListener("keydown", (event) => {
+  input[event.code] = true;
 });
-window.addEventListener('keyup', event => {
-    input[event.code] = false;
+window.addEventListener("keyup", (event) => {
+  input[event.code] = false;
 });
 //todo-ball, board, bricks->gameObjects{}
 export function gameLoop(ball, board, bricks, canvasView, gameOver) {
