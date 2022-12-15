@@ -1,25 +1,20 @@
-
-//import { update } from "./engine/gameLoop";
-
-import { move } from "./engine/move";
 import { Ball } from "./figures/Ball";
 import { Paddle } from "./figures/Paddle";
-import { Brick } from "./figures/Brick";
 import { Vector } from "./Geometry/Vector";
 import { changeBallDirection } from "./physics/movement";
 import { createBricks } from "./utils/brickFactory";
 import {
     INITIAL_BALL_X, INITIAL_BALL_Y, BRICK_BONUS_POINTS,
-    BOARD_WIDTH, BALL_DIAMETER, BRICK_HEIGHT, BRICK_WIDTH, BOARD_HEIGHT
 } from "./utils/constants";
 import {
-    isBallNearBricks, isBallHittingTheFloor, isBallHittingTheCeiling,
-    isBallHittingRightWall, isBallHittingTheLeftWall, isBallCollidingWithBoard
+    isBallNearBricks
 } from "./utils/validators";
 import { CanvasView } from "./view/CanvasView";
 import { getHitBrickIndex } from "./physics/misc";
+import { gameLoop } from "./engine/gameLoop";
 
 const canvasView = new CanvasView("gameCanvas");
+const gameoverDiv = document.getElementById("gameOver");
 let lastTime = 0;
 let elapsed = 0;
 const STEP_SIZE = 20;
@@ -56,6 +51,7 @@ let isPlayMusic = false;
 document.getElementById("new-game").addEventListener("click", () => {
     gameOver = false;
     startGame();
+    gameoverDiv.style.display = "none"
 });
 playBtn.addEventListener('click', () => {
     document.getElementById('container').style.display = 'none';
@@ -111,7 +107,8 @@ export function update(time: number) {
     }
     while (elapsed > STEP_SIZE) {
         elapsed -= STEP_SIZE;
-        gameLoop();
+        const loop = gameLoop.bind(null, ball, board, bricks, canvasView, gameOver);
+        loop();
         document["newgame"] = true;
     }
     if (bricks.length && !gameOver) {
@@ -119,59 +116,7 @@ export function update(time: number) {
     }
 }
 
-
-export function gameLoop() {
-    if (input['ArrowLeft'] && (board.position.x > 0)) {
-        board.velocity.x = -7;
-        move(board, board.velocity);
-    } else if (input['ArrowRight'] && (board.position.x + BOARD_WIDTH < canvasView.canvas.width)) {
-        board.velocity.x = 7;
-        move(board, board.velocity);
-    }
-    canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
-    canvasView.drawBricks(bricks);
-    canvasView.drawBoard(board);
-    canvasView.drawBall(ball);
-    collisionDetector();
-    move(ball, ball.velocity);
-}
-
-export function collisionDetector() {
-    if (isBallCollidingWithBoard(ball, board)) {
-        handleBoardHit(ball);
-    }
-    if (isBallHittingTheFloor(ball, canvasView)) {
-        gameOver = true;
-        showGameOverMessage();
-    } else if (isBallHittingTheCeiling(ball)) {
-        ball.velocity.y = Math.abs(ball.velocity.y);
-    } else if (isBallHittingRightWall(ball, canvasView)) {
-        ball.velocity.x = - ball.velocity.x;
-    } else if (isBallHittingTheLeftWall(ball)) {
-        ball.velocity.x = Math.abs(ball.velocity.x);
-    }
-}
-
 export function showGameOverMessage() {
-    const gameoverDiv = document.getElementById("gameOver");
     gameoverDiv.style.display = "block";
     (gameoverDiv as HTMLDivElement).innerText = `Game over, score:${scorePoints}`;
-
-}
-
-export function handleBoardHit(ball: Ball) {
-    const currentAngle = Math.atan2(ball.position.y, ball.position.x);
-    const deltaCenterX = ball.position.x - (board.position.x - BOARD_WIDTH / 2);
-    const sign = ball.position.x > board.position.x + BOARD_WIDTH / 2 ? 1 : -1;
-    const coeff = sign * (ball.position.x) / (BOARD_WIDTH / 2);
-    const angleToAdd = Math.PI / 20;
-    const nextAngle = coeff * angleToAdd + currentAngle;
-    const yOffset = 5;
-    if (nextAngle < 2 * Math.PI / 3 && nextAngle > Math.PI / 20) {
-        ball.velocity.x = 7 * Math.sin(nextAngle);
-        ball.velocity.y = 7 * Math.cos(nextAngle);
-    } else {
-        ball.velocity.y = -ball.velocity.y;
-    }
-    ball.position.y -= yOffset;
 }

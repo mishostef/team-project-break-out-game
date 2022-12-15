@@ -1,6 +1,7 @@
 import { Ball } from "../figures/Ball";
 import { Brick } from "../figures/Brick";
-import { BRICK_HEIGHT, BRICK_WIDTH, BALL_DIAMETER } from "../utils/constants";
+import { Paddle } from "../figures/Paddle";
+import { BRICK_HEIGHT, BRICK_WIDTH, BALL_DIAMETER, BOARD_WIDTH } from "../utils/constants";
 import { Vector } from "../utils/vector";
 
 export function changeBallDirection(ball: Ball, brick: Brick) {
@@ -29,4 +30,21 @@ export function changeBallDirection(ball: Ball, brick: Brick) {
         ball.velocity.y *= -1;
     }
 
+}
+
+export function handleBoardHit(ball: Ball, board:Paddle) {
+    const currentAngle = Math.atan2(ball.position.y, ball.position.x);
+    const deltaCenterX = ball.position.x - (board.position.x - BOARD_WIDTH / 2);
+    const sign = ball.position.x > board.position.x + BOARD_WIDTH / 2 ? 1 : -1;
+    const coeff = sign * (ball.position.x) / (BOARD_WIDTH / 2);
+    const angleToAdd = Math.PI / 20;
+    const nextAngle = coeff * angleToAdd + currentAngle;
+    const yOffset = 5;
+    if (nextAngle < 2 * Math.PI / 3 && nextAngle > Math.PI / 20) {
+        ball.velocity.x = 7 * Math.sin(nextAngle);
+        ball.velocity.y = 7 * Math.cos(nextAngle);
+    } else {
+        ball.velocity.y = -ball.velocity.y;
+    }
+    ball.position.y -= yOffset;
 }
