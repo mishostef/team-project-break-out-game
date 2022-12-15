@@ -1,4 +1,3 @@
-
 // BRICKS
 export const BRICK_ROWS = 3;
 export const BRICKS_COLS = 10;
