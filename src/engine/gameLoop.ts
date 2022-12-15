@@ -1,6 +1,6 @@
 import { createBricks } from "../utils/brickFactory";
 import { CanvasView } from "../view/CanvasView";
-import { Board } from "../figures/Board";
+import { Paddle } from "../figures/Paddle";
 import { Ball } from "../figures/Ball";
 import { Vector } from "../Geometry/Vector";
 import { move } from "./move";
@@ -22,7 +22,7 @@ const STEP_SIZE = 20;
 const bricks = createBricks();
 const boardImg = document.getElementById('board') as HTMLImageElement;
 const boardPosition = new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100);
-const board = new Board(boardPosition, boardImg);
+const board = new Paddle(boardPosition, boardImg);
 const ball = new Ball({ x: INITIAL_BALL_X, y: INITIAL_BALL_Y }, "/assets/ball.png");
 const input: { [code: string]: boolean } = {};
 let deleteBrickIndex = -1;

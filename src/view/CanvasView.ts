@@ -9,7 +9,7 @@ import {
 } from "../utils/constants";
 import { Ball } from "../figures/Ball";
 import { Brick } from "../figures/Brick";
-import { Board } from "../figures/Board";
+import { Paddle } from "../figures/Paddle";
 
 export class CanvasView {
     private ctx: CanvasRenderingContext2D;
@@ -43,9 +43,9 @@ export class CanvasView {
         this.drawImage(ball.position, ball.getImage(), BALL_DIAMETER, BALL_DIAMETER);
     }
 
-    drawBoard(board: Board) {
+    drawBoard(board: Paddle) {
         this.ctx.beginPath();
-        this.ctx.drawImage(board.image, board.position.x, board.position.y, BOARD_WIDTH, BOARD_HEIGHT);
+        this.ctx.drawImage(board.getImage(), board.position.x, board.position.y, BOARD_WIDTH, BOARD_HEIGHT);
         this.ctx.closePath();
     }
 

@@ -1,5 +1,5 @@
 import { Ball } from "../figures/Ball";
-import { Board } from "../figures/Board";
+import { Paddle } from "../figures/Paddle";
 import { CanvasView } from "../view/CanvasView";
 import { BALL_DIAMETER, BRICKS_END, BRICK_WIDTH } from "./constants";
 

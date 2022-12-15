@@ -3,7 +3,7 @@
 
 import { move } from "./engine/move";
 import { Ball } from "./figures/Ball";
-import { Board } from "./figures/Board";
+import { Paddle } from "./figures/Paddle";
 import { Brick } from "./figures/Brick";
 import { Vector } from "./Geometry/Vector";
 import { changeBallDirection } from "./physics/movement";
@@ -25,7 +25,7 @@ const STEP_SIZE = 20;
 const boardImg = document.getElementById('board') as HTMLImageElement;
 const boardPosition = new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100);
 let bricks = createBricks();
-let board = new Board(boardPosition, boardImg);
+let board = new Paddle(boardPosition, boardImg);
 let ball = new Ball({ x: INITIAL_BALL_X, y: INITIAL_BALL_Y }, "/assets/ball.png");
 const input: { [code: string]: boolean } = {};
 
@@ -79,7 +79,7 @@ document.getElementById('setting-btn').addEventListener('click', () => {
 
 function startGame() {
     bricks = createBricks();
-    board = new Board(boardPosition, boardImg);
+    board = new Paddle(boardPosition, boardImg);
     ball = new Ball({ x: INITIAL_BALL_X, y: INITIAL_BALL_Y }, "/assets/ball.png");
     ballVelocity = new Vector(3, 3);
     update(performance.now());
@@ -165,7 +165,7 @@ export function handleBoardHit(ball: Ball) {
     ball.position.y -= yOffset;
 }
 
-export function isBallHittingBoardEdges(ball: Ball, board: Board) {
+export function isBallHittingBoardEdges(ball: Ball, board: Paddle) {
     return (ball.position.x <= board.position.x + BOARD_WIDTH
         || ball.position.x >= board.position.x - BALL_DIAMETER);
 }

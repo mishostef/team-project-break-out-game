@@ -5,8 +5,12 @@ export class Paddle {
 
     constructor(
         public position: Vector,
-        image: string
+        image: HTMLImageElement
     ) {
-        this.image.src = image;
+        this.image = image;
+    }
+
+    getImage() : HTMLImageElement {
+        return this.image;
     }
 }
