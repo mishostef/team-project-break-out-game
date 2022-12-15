@@ -152,13 +152,15 @@ export function showGameOverMessage() {
 
 export function handleBoardHit(ball: Ball) {
     const currentAngle = Math.atan2(ball.position.y, ball.position.x);
-    const coeff = (ball.position.x) / (BOARD_WIDTH / 2);
+    const deltaCenterX = ball.position.x - (board.position.x - BOARD_WIDTH / 2);
+    const sign = ball.position.x > board.position.x + BOARD_WIDTH / 2 ? 1 : -1;
+    const coeff = sign * (ball.position.x) / (BOARD_WIDTH / 2);
     const angleToAdd = Math.PI / 20;
     const nextAngle = coeff * angleToAdd + currentAngle;
     const yOffset = 5;
-    if (nextAngle < Math.PI / 3) {
-        ballVelocity.x = Math.sin(nextAngle);
-        ballVelocity.y = Math.cos(nextAngle);
+    if (nextAngle < 2 * Math.PI / 3 && nextAngle > Math.PI / 20) {
+        ballVelocity.x = 7 * Math.sin(nextAngle);
+        ballVelocity.y = 7 * Math.cos(nextAngle);
     } else {
         ballVelocity.y = -ballVelocity.y;
     }
@@ -190,8 +192,8 @@ export function isBallCollidingWithBoard() {
     console.log(ball.position.x >= board.position.x - BALL_DIAMETER);
     return ((ball.position.y + BALL_DIAMETER / 2 <= board.position.y)
         && (ball.position.y + BALL_DIAMETER / 2 >= board.position.y - 20)
-        && (ball.position.x - 3 * BALL_DIAMETER / 4 <= board.position.x + BOARD_WIDTH)
-        && (ball.position.x + 3 * BALL_DIAMETER / 4 >= board.position.x));
+        && (ball.position.x - BALL_DIAMETER / 2 <= board.position.x + BOARD_WIDTH)
+        && (ball.position.x + BALL_DIAMETER / 4 >= board.position.x));
 }
 
 
