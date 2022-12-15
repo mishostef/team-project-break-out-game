@@ -26,14 +26,17 @@ const STEP_SIZE = 20;
 const boardImg = document.getElementById('board') as HTMLImageElement;
 const boardPosition = new Vector(canvasView.canvas.width / 2, canvasView.canvas.height - 100);
 let bricks = createBricks();
-let board = new Paddle(boardPosition, boardImg);
-let ball = new Ball({ x: INITIAL_BALL_X, y: INITIAL_BALL_Y }, "/assets/ball.png");
+let boardVelocity = new Vector(0, 0);
+let board = new Paddle(boardPosition, boardImg, boardVelocity);
+const ballPosition = new Vector(INITIAL_BALL_X, INITIAL_BALL_Y);
+let ballVelocity = new Vector(3, 3);
+let ball = new Ball(ballPosition, "/assets/ball.png", ballVelocity);
 const input: { [code: string]: boolean } = {};
 
-let ballVelocity = new Vector(3, 3);
+
 let gameOver = false;
 let scorePoints = 0;
-let boardVelocity = new Vector(0, 0);
+
 
 window.addEventListener('keydown', event => {
     input[event.code] = true;
@@ -81,8 +84,10 @@ document.getElementById('setting-btn').addEventListener('click', () => {
 function startGame() {
     bricks = createBricks();
     board = new Paddle(boardPosition, boardImg);
-    ball = new Ball({ x: INITIAL_BALL_X, y: INITIAL_BALL_Y }, "/assets/ball.png");
-    ballVelocity = new Vector(3, 3);
+    const ballPosition = new Vector(INITIAL_BALL_X, INITIAL_BALL_Y)
+    ball = new Ball(ballPosition, "/assets/ball.png");
+    ball.ballVelocity = new Vector(3, 3);
+    scorePoints = 0;
     update(performance.now());
 }
 
@@ -93,7 +98,7 @@ export function update(time: number) {
     let deleteBrickIndex = isBallNearBricks(ball) ? getHitBrickIndex(bricks, ball) : -1;
     if (deleteBrickIndex != -1) {
         const brick = bricks[deleteBrickIndex];
-        changeBallDirection(ball, brick, ballVelocity);
+        changeBallDirection(ball, brick);
         bricks.splice(deleteBrickIndex, 1);
         scorePoints += BRICK_BONUS_POINTS;
     }
@@ -113,18 +118,18 @@ export function update(time: number) {
 
 export function gameLoop() {
     if (input['ArrowLeft'] && (board.position.x > 0)) {
-        boardVelocity.x = -7;
-        move(board, boardVelocity);
+        board.boardVelocity.x = -7;
+        move(board, board.boardVelocity);
     } else if (input['ArrowRight'] && (board.position.x + BOARD_WIDTH < canvasView.canvas.width)) {
-        boardVelocity.x = 7;
-        move(board, boardVelocity);
+        board.boardVelocity.x = 7;
+        move(board, board.boardVelocity);
     }
     canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
     canvasView.drawBricks(bricks);
     canvasView.drawBoard(board);
     canvasView.drawBall(ball);
     collisionDetector();
-    move(ball, ballVelocity);
+    move(ball, ball.ballVelocity);
 }
 
 export function collisionDetector() {
@@ -135,11 +140,11 @@ export function collisionDetector() {
         gameOver = true;
         showGameOverMessage();
     } else if (isBallHittingTheCeiling(ball)) {
-        ballVelocity.y = Math.abs(ballVelocity.y);
+        ball.ballVelocity.y = Math.abs(ball.ballVelocity.y);
     } else if (isBallHittingRightWall(ball, canvasView)) {
-        ballVelocity.x = - ballVelocity.x;
+        ball.ballVelocity.x = - ball.ballVelocity.x;
     } else if (isBallHittingTheLeftWall(ball)) {
-        ballVelocity.x = Math.abs(ballVelocity.x);
+        ball.ballVelocity.x = Math.abs(ball.ballVelocity.x);
     }
 }
 
@@ -159,11 +164,10 @@ export function handleBoardHit(ball: Ball) {
     const nextAngle = coeff * angleToAdd + currentAngle;
     const yOffset = 5;
     if (nextAngle < 2 * Math.PI / 3 && nextAngle > Math.PI / 20) {
-        ballVelocity.x = 7 * Math.sin(nextAngle);
-        ballVelocity.y = 7 * Math.cos(nextAngle);
+        ball.ballVelocity.x = 7 * Math.sin(nextAngle);
+        ball.ballVelocity.y = 7 * Math.cos(nextAngle);
     } else {
-        ballVelocity.y = -ballVelocity.y;
+        ball.ballVelocity.y = -ball.ballVelocity.y;
     }
     ball.position.y -= yOffset;
 }
-
