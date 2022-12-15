@@ -42,6 +42,10 @@ window.addEventListener('keyup', event => {
     input[event.code] = false;
 });
 
+document.addEventListener('mousemove', (e) => {
+    board.position.x = e.clientX;
+})
+
 
 const playBtn = document.getElementById('play-btn');
 let isPlayMusic = false;
