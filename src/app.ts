@@ -16,6 +16,9 @@ import {
   BRICK_HEIGHT,
   BRICK_WIDTH,
   BOARD_HEIGHT,
+  EASY_LEVEl,
+  MEDIUM_LEVEL,
+  HARD_LEVEL,
 } from "./utils/constants";
 import {
   isBallNearBricks,
@@ -31,7 +34,9 @@ import { getHitBrickIndex } from "./physics/misc";
 const canvasView = new CanvasView("gameCanvas");
 let lastTime = 0;
 let elapsed = 0;
+
 const STEP_SIZE = 20;
+let GAME_DIFFICULTY = EASY_LEVEl;
 const boardImg = document.getElementById("board") as HTMLImageElement;
 const boardPosition = new Vector(
   canvasView.canvas.width / 2,
@@ -41,7 +46,7 @@ let bricks = createBricks();
 let boardVelocity = new Vector(0, 0);
 let board = new Paddle(boardPosition, boardImg, boardVelocity);
 const ballPosition = new Vector(INITIAL_BALL_X, INITIAL_BALL_Y);
-let ballVelocity = new Vector(3, 3);
+let ballVelocity = new Vector(GAME_DIFFICULTY, GAME_DIFFICULTY);
 let ball = new Ball(ballPosition, "/assets/ball.png", ballVelocity);
 const input: { [code: string]: boolean } = {};
 
@@ -99,12 +104,28 @@ document.getElementById("setting-btn").addEventListener("click", () => {
   });
 });
 
+document.getElementById("level").addEventListener("click", (e) => {
+  const input = (e.target as HTMLInputElement).id;
+
+  switch (input) {
+    case "easy":
+      GAME_DIFFICULTY = EASY_LEVEl;
+      break;
+    case "medium":
+      GAME_DIFFICULTY = MEDIUM_LEVEL;
+      break;
+    case "hard":
+      GAME_DIFFICULTY = HARD_LEVEL;
+      break;
+  }
+});
+
 function startGame() {
   bricks = createBricks();
   board = new Paddle(boardPosition, boardImg);
   const ballPosition = new Vector(INITIAL_BALL_X, INITIAL_BALL_Y);
   ball = new Ball(ballPosition, "/assets/ball.png");
-  ball.velocity = new Vector(3, 3);
+  ball.velocity = new Vector(GAME_DIFFICULTY, GAME_DIFFICULTY);
   scorePoints = 0;
   update(performance.now());
 }

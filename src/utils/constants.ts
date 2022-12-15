@@ -22,3 +22,8 @@ export const BALL_DIAMETER = 40;
 
 //MISCELLANEOUS
 export const BRICK_BONUS_POINTS = 10;
+
+// GAME
+export const EASY_LEVEl = 3;
+export const MEDIUM_LEVEL = 5;
+export const HARD_LEVEL = 8;
