@@ -3,7 +3,7 @@ import { Brick } from "../figures/Brick";
 import { BRICK_HEIGHT, BRICK_WIDTH, BALL_DIAMETER } from "../utils/constants";
 import { Vector } from "../utils/vector";
 
-export function changeBallDirection(ball: Ball, brick: Brick, ballVelocity: Vector) {
+export function changeBallDirection(ball: Ball, brick: Brick) {
     const BRICK_DIAGONAL = Math.sqrt(BRICK_HEIGHT ** 2 + BRICK_WIDTH ** 2);
     const brickCenterX = brick.position.x + BRICK_WIDTH / 2;
     const brickCenterY = brick.position.y + BRICK_HEIGHT / 2;
@@ -23,10 +23,10 @@ export function changeBallDirection(ball: Ball, brick: Brick, ballVelocity: Vect
         && (ballCenterX < maxLeftXSideHit + BRICK_WIDTH)
         && (ballCenterY > minYSideHit)
         && (ballCenterY < maxYSideHit));
-    if ((isBallComingFromButtomLeft && ballVelocity.x > 0) || (isBallComingFromButtomRight && ballVelocity.x < 0)) {
-        ballVelocity.x *= -1;
+    if ((isBallComingFromButtomLeft && ball.velocity.x > 0) || (isBallComingFromButtomRight && ball.velocity.x < 0)) {
+        ball.velocity.x *= -1;
     } else {
-        ballVelocity.y *= -1;
+        ball.velocity.y *= -1;
     }
 
 }
