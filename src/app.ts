@@ -14,9 +14,10 @@ import {
 } from "./utils/constants";
 import {
     isBallNearBricks, isBallHittingTheFloor, isBallHittingTheCeiling,
-    isBallHittingRightWall, isBallHittingTheLeftWall
+    isBallHittingRightWall, isBallHittingTheLeftWall, isBallCollidingWithBoard
 } from "./utils/validators";
 import { CanvasView } from "./view/CanvasView";
+import { getHitBrickIndex } from "./physics/misc";
 
 const canvasView = new CanvasView("gameCanvas");
 let lastTime = 0;
@@ -73,7 +74,7 @@ document.getElementById('setting-btn').addEventListener('click', () => {
 
     document.getElementById('play-sound-btn').addEventListener('click', () => {
         isPlayMusic = true;
-       (document.querySelector('.gg-check') as HTMLElement).style.display = 'block';
+        (document.querySelector('.gg-check') as HTMLElement).style.display = 'block';
     })
 })
 
@@ -89,11 +90,10 @@ export function update(time: number) {
     const delta = time - lastTime;
     lastTime = time;
     elapsed += delta;
-    let deleteBrickIndex = isBallNearBricks(ball) ? getHitBrickIndex() : -1;
+    let deleteBrickIndex = isBallNearBricks(ball) ? getHitBrickIndex(bricks, ball) : -1;
     if (deleteBrickIndex != -1) {
         const brick = bricks[deleteBrickIndex];
         changeBallDirection(ball, brick, ballVelocity);
-        // ballVelocity.y = -ballVelocity.y;
         bricks.splice(deleteBrickIndex, 1);
         scorePoints += BRICK_BONUS_POINTS;
     }
@@ -128,7 +128,7 @@ export function gameLoop() {
 }
 
 export function collisionDetector() {
-    if (isBallCollidingWithBoard()) {
+    if (isBallCollidingWithBoard(ball, board)) {
         handleBoardHit(ball);
     }
     if (isBallHittingTheFloor(ball, canvasView)) {
@@ -166,34 +166,4 @@ export function handleBoardHit(ball: Ball) {
     }
     ball.position.y -= yOffset;
 }
-
-export function isBallHittingBoardEdges(ball: Ball, board: Paddle) {
-    return (ball.position.x <= board.position.x + BOARD_WIDTH
-        || ball.position.x >= board.position.x - BALL_DIAMETER);
-}
-
-export function getHitBrickIndex() {
-    return bricks.findIndex(brick => {
-        const left = brick.position.x - BALL_DIAMETER / 2;
-        const right = brick.position.x + BRICK_WIDTH + BALL_DIAMETER / 2;
-        const top = brick.position.y - BALL_DIAMETER / 2;
-        const bottom = brick.position.y + BRICK_HEIGHT + BALL_DIAMETER / 2;
-        return ((ball.position.x >= left)
-            && (ball.position.x <= right)
-            && (ball.position.y >= top)
-            && (ball.position.y <= bottom));
-    });
-}
-
-export function isBallCollidingWithBoard() {
-    console.log(ball.position.y + BALL_DIAMETER / 2 <= board.position.y + BOARD_HEIGHT);
-    console.log(ball.position.y + BALL_DIAMETER / 2 >= board.position.y);
-    console.log(ball.position.x <= board.position.x + BOARD_WIDTH);
-    console.log(ball.position.x >= board.position.x - BALL_DIAMETER);
-    return ((ball.position.y + BALL_DIAMETER / 2 <= board.position.y)
-        && (ball.position.y + BALL_DIAMETER / 2 >= board.position.y - 20)
-        && (ball.position.x - BALL_DIAMETER / 2 <= board.position.x + BOARD_WIDTH)
-        && (ball.position.x + BALL_DIAMETER / 4 >= board.position.x));
-}
-
 
