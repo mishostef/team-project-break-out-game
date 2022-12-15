@@ -31,6 +31,7 @@ const input: { [code: string]: boolean } = {};
 
 let gameOver = false;
 let scorePoints = 0;
+let isMouseActive = true;
 
 
 window.addEventListener('keydown', event => {
@@ -41,10 +42,15 @@ window.addEventListener('keyup', event => {
 });
 
 document.addEventListener('mousemove', (e) => {
-    board.position.x = e.clientX;
+    if (isMouseActive)
+        board.position.x = e.clientX;
 })
 
-
+window.oncontextmenu = (e) => {
+    e.preventDefault();
+    console.log("right clicked");
+    isMouseActive = false;
+}
 const playBtn = document.getElementById('play-btn');
 let isPlayMusic = false;
 
