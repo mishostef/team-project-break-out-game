@@ -57,7 +57,6 @@ playBtn.addEventListener('click', () => {
     if (isPlayMusic) {
         const music = new Audio("../assets/music.mp3");
         music.volume = 0.1;
-
         music.play();
     }
 });
@@ -74,6 +73,7 @@ document.getElementById('setting-btn').addEventListener('click', () => {
 
     document.getElementById('play-sound-btn').addEventListener('click', () => {
         isPlayMusic = true;
+       (document.querySelector('.gg-check') as HTMLElement).style.display = 'block';
     })
 })
 
