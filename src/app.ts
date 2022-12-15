@@ -86,7 +86,7 @@ function startGame() {
     board = new Paddle(boardPosition, boardImg);
     const ballPosition = new Vector(INITIAL_BALL_X, INITIAL_BALL_Y)
     ball = new Ball(ballPosition, "/assets/ball.png");
-    ball.ballVelocity = new Vector(3, 3);
+    ball.velocity = new Vector(3, 3);
     scorePoints = 0;
     update(performance.now());
 }
@@ -118,18 +118,18 @@ export function update(time: number) {
 
 export function gameLoop() {
     if (input['ArrowLeft'] && (board.position.x > 0)) {
-        board.boardVelocity.x = -7;
-        move(board, board.boardVelocity);
+        board.velocity.x = -7;
+        move(board, board.velocity);
     } else if (input['ArrowRight'] && (board.position.x + BOARD_WIDTH < canvasView.canvas.width)) {
-        board.boardVelocity.x = 7;
-        move(board, board.boardVelocity);
+        board.velocity.x = 7;
+        move(board, board.velocity);
     }
     canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
     canvasView.drawBricks(bricks);
     canvasView.drawBoard(board);
     canvasView.drawBall(ball);
     collisionDetector();
-    move(ball, ball.ballVelocity);
+    move(ball, ball.velocity);
 }
 
 export function collisionDetector() {
@@ -140,11 +140,11 @@ export function collisionDetector() {
         gameOver = true;
         showGameOverMessage();
     } else if (isBallHittingTheCeiling(ball)) {
-        ball.ballVelocity.y = Math.abs(ball.ballVelocity.y);
+        ball.velocity.y = Math.abs(ball.velocity.y);
     } else if (isBallHittingRightWall(ball, canvasView)) {
-        ball.ballVelocity.x = - ball.ballVelocity.x;
+        ball.velocity.x = - ball.velocity.x;
     } else if (isBallHittingTheLeftWall(ball)) {
-        ball.ballVelocity.x = Math.abs(ball.ballVelocity.x);
+        ball.velocity.x = Math.abs(ball.velocity.x);
     }
 }
 
@@ -164,10 +164,10 @@ export function handleBoardHit(ball: Ball) {
     const nextAngle = coeff * angleToAdd + currentAngle;
     const yOffset = 5;
     if (nextAngle < 2 * Math.PI / 3 && nextAngle > Math.PI / 20) {
-        ball.ballVelocity.x = 7 * Math.sin(nextAngle);
-        ball.ballVelocity.y = 7 * Math.cos(nextAngle);
+        ball.velocity.x = 7 * Math.sin(nextAngle);
+        ball.velocity.y = 7 * Math.cos(nextAngle);
     } else {
-        ball.ballVelocity.y = -ball.ballVelocity.y;
+        ball.velocity.y = -ball.velocity.y;
     }
     ball.position.y -= yOffset;
 }

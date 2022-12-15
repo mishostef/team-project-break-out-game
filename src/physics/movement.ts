@@ -23,10 +23,10 @@ export function changeBallDirection(ball: Ball, brick: Brick) {
         && (ballCenterX < maxLeftXSideHit + BRICK_WIDTH)
         && (ballCenterY > minYSideHit)
         && (ballCenterY < maxYSideHit));
-    if ((isBallComingFromButtomLeft && ball.ballVelocity.x > 0) || (isBallComingFromButtomRight && ball.ballVelocity.x < 0)) {
-        ball.ballVelocity.x *= -1;
+    if ((isBallComingFromButtomLeft && ball.velocity.x > 0) || (isBallComingFromButtomRight && ball.velocity.x < 0)) {
+        ball.velocity.x *= -1;
     } else {
-        ball.ballVelocity.y *= -1;
+        ball.velocity.y *= -1;
     }
 
 }

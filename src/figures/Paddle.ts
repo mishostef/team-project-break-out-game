@@ -3,7 +3,7 @@ import { Vector } from "../Geometry/Vector";
 
 export class Paddle {
     private image: HTMLImageElement = new Image();
-    public boardVelocity: Vector = new Vector(0, 0);
+    public velocity: Vector = new Vector(0, 0);
     constructor(
         public position: Vector,
         image: HTMLImageElement,
@@ -11,7 +11,7 @@ export class Paddle {
     ) {
         this.image = image;
         if(!!boardvelocity)
-        this.boardVelocity = boardvelocity;
+        this.velocity = boardvelocity;
     }
 
     getImage(): HTMLImageElement {

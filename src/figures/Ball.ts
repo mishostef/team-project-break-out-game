@@ -3,7 +3,7 @@ import { Vector } from "../Geometry/Vector";
 
 export class Ball {
     private image: HTMLImageElement = new Image();
-    public ballVelocity: Vector = new Vector(0, 0);
+    public velocity: Vector = new Vector(0, 0);
     constructor(
         public position: Vector,
         image: string,
@@ -11,7 +11,7 @@ export class Ball {
     ) {
         this.image.src = image;
         if (!!ballvelocity)
-            this.ballVelocity = ballvelocity;
+            this.velocity = ballvelocity;
     }
 
     getImage(): HTMLImageElement {
