@@ -26,16 +26,10 @@ export function isBallNearBricks(ball: Ball) {
   return ball.position.y < BRICKS_END;
 }
 export function isBallCollidingWithBoard(ball, board) {
-  console.log(
-    ball.position.y + BALL_DIAMETER / 2 <= board.position.y + BOARD_HEIGHT
-  );
-  console.log(ball.position.y + BALL_DIAMETER / 2 >= board.position.y);
-  console.log(ball.position.x <= board.position.x + BOARD_WIDTH);
-  console.log(ball.position.x >= board.position.x - BALL_DIAMETER);
   return (
-    ball.position.y + BALL_DIAMETER / 2 <= board.position.y &&
-    ball.position.y + BALL_DIAMETER / 2 >= board.position.y - 20 &&
+    ball.position.y + BALL_DIAMETER / 2 >= board.position.y &&
+    ball.position.y + BALL_DIAMETER / 2 <= board.position.y + 10 &&
     ball.position.x - BALL_DIAMETER / 2 <= board.position.x + BOARD_WIDTH &&
-    ball.position.x + BALL_DIAMETER / 4 >= board.position.x
+    ball.position.x + BALL_DIAMETER / 2 >= board.position.x
   );
 }

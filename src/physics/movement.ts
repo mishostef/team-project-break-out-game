@@ -32,19 +32,27 @@ export function changeBallDirection(ball: Ball, brick: Brick) {
 
 }
 
-export function handleBoardHit(ball: Ball, board:Paddle) {
-    const currentAngle = Math.atan2(ball.position.y, ball.position.x);
-    const deltaCenterX = ball.position.x - (board.position.x - BOARD_WIDTH / 2);
+export function handleBoardHit(ball: Ball, board: Paddle) {
+    const currentAngle = Math.atan2(-ball.velocity.y, ball.velocity.x);
+    const deltaCenterX = (ball.position.x - (board.position.x + BOARD_WIDTH / 2)) / (BOARD_WIDTH / 2);
+    console.log('delta=', deltaCenterX);
+
     const sign = ball.position.x > board.position.x + BOARD_WIDTH / 2 ? 1 : -1;
-    const coeff = sign * (ball.position.x) / (BOARD_WIDTH / 2);
-    const angleToAdd = Math.PI / 20;
-    const nextAngle = coeff * angleToAdd + currentAngle;
+    // const coeff = sign * (ball.position.x) / (BOARD_WIDTH / 2);
+    const angleToAdd = Math.PI / 5;
+    let nextAngle = deltaCenterX * angleToAdd + currentAngle;
     const yOffset = 5;
-    if (nextAngle < 2 * Math.PI / 3 && nextAngle > Math.PI / 20) {
-        ball.velocity.x = 7 * Math.sin(nextAngle);
-        ball.velocity.y = 7 * Math.cos(nextAngle);
-    } else {
-        ball.velocity.y = -ball.velocity.y;
+    if (nextAngle < -5 * Math.PI / 6) {
+        nextAngle = -5 * Math.PI / 6;
+    } if (nextAngle > -Math.PI / 6) {
+        nextAngle = -Math.PI / 6
     }
-    ball.position.y -= yOffset;
+    // alert(`current=${currentAngle} nextangle= ${nextAngle} 
+    // ${Math.cos(nextAngle)}   ${Math.sin(nextAngle)}
+    // delta=${deltaCenterX}
+    // `);
+
+    ball.velocity.x = 5 * Math.cos(nextAngle);
+    ball.velocity.y = 5 * Math.sin(nextAngle);
+    ball.position.y = board.position.y - BALL_DIAMETER / 2 - 5;
 }

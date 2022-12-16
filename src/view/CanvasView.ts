@@ -44,7 +44,7 @@ export class CanvasView {
 
   drawBall(ball: Ball) {
     this.drawImage(
-      ball.position,
+      { x: ball.position.x - BALL_DIAMETER / 2, y: ball.position.y - BALL_DIAMETER / 2 },
       ball.getImage(),
       BALL_DIAMETER,
       BALL_DIAMETER
