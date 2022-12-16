@@ -1,10 +1,11 @@
 import { Vector } from "../utils/vector";
 
-export function move(gameObject: GameObject, velocity: Vector) {
-  gameObject.position.x += velocity.x;
-  gameObject.position.y += velocity.y;
+export function move(gameObject: GameObject) {
+  gameObject.position.x += gameObject.velocity.x;
+  gameObject.position.y += gameObject.velocity.y;
 }
 
 export interface GameObject {
   position: { x: number; y: number };
+  velocity: Vector
 }

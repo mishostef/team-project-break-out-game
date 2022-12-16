@@ -20,14 +20,13 @@ import {
 import { isBallNearBricks } from "./utils/validators";
 import { CanvasView } from "./view/CanvasView";
 import { getHitBrickIndex } from "./physics/misc";
-import { gameLoop } from "./engine/gameLoop";
+import { Game, gameLoop, GameObjects } from "./engine/gameLoop";
 
 const canvasView = new CanvasView("gameCanvas");
 const gameoverDiv = document.getElementById("gameOver");
-let lastTime = 0;
-let elapsed = 0;
 
-const STEP_SIZE = 20;
+
+//const STEP_SIZE = 20;
 let GAME_DIFFICULTY = EASY_LEVEl;
 const boardImg = document.getElementById("board") as HTMLImageElement;
 const boardPosition = new Vector(
@@ -42,9 +41,11 @@ let ballVelocity = new Vector(GAME_DIFFICULTY, GAME_DIFFICULTY);
 let ball = new Ball(ballPosition, "/assets/ball.png", ballVelocity);
 const input: { [code: string]: boolean } = {};
 
-let gameOver = false;
 let scorePoints = 0;
 let isMouseActive = true;
+let lives = 3;
+const gameObjects: GameObjects = { ball, board, bricks }
+let game = new Game(canvasView, lives);
 
 window.addEventListener("keydown", (event) => {
   input[event.code] = true;
@@ -65,9 +66,11 @@ window.oncontextmenu = (e) => {
 const playBtn = document.getElementById("play-btn");
 let isPlayMusic = false;
 
-document.getElementById("new-game").addEventListener("click", () => {
-  gameOver = false;
-  startGame();
+document.getElementById("new-game").addEventListener("click", (e) => {
+  if (game.lives <= 1) {
+    (e.target as HTMLButtonElement).style.display = "none"
+  }
+  game.startGame();
   gameoverDiv.style.display = "none";
 });
 playBtn.addEventListener("click", () => {
@@ -77,7 +80,7 @@ playBtn.addEventListener("click", () => {
   detailsBox.style.display = "flex";
   detailsBox.style.justifyContent = "space-around";
 
-  startGame();
+  game.startGame();
 
   if (isPlayMusic) {
     const music = new Audio("../assets/music.mp3");
@@ -126,44 +129,7 @@ document.getElementById("level").addEventListener("click", (e) => {
   }
 });
 
-function startGame() {
-  bricks = createBricks();
-  board = new Paddle(boardPosition, boardImg);
-  const ballPosition = new Vector(INITIAL_BALL_X, INITIAL_BALL_Y);
-  ball = new Ball(ballPosition, "/assets/ball.png");
-  ball.velocity = new Vector(GAME_DIFFICULTY, GAME_DIFFICULTY);
-  scorePoints = 0;
-  update(performance.now());
-}
-
-export function update(time: number) {
-  const delta = time - lastTime;
-  lastTime = time;
-  elapsed += delta;
-  let deleteBrickIndex = isBallNearBricks(ball)
-    ? getHitBrickIndex(bricks, ball)
-    : -1;
-  if (deleteBrickIndex != -1) {
-    const brick = bricks[deleteBrickIndex];
-    changeBallDirection(ball, brick);
-    bricks.splice(deleteBrickIndex, 1);
-    scorePoints += BRICK_BONUS_POINTS;
-  }
-  if (elapsed > STEP_SIZE * 5) {
-    elapsed = STEP_SIZE * 5;
-  }
-  while (elapsed > STEP_SIZE) {
-    elapsed -= STEP_SIZE;
-    const loop = gameLoop.bind(null, ball, board, bricks, canvasView, gameOver);
-    loop();
-    document["newgame"] = true;
-  }
-  if (bricks.length && !gameOver) {
-    requestAnimationFrame(update);
-  }
-}
-
-export function showGameOverMessage() {
+export function showGameOverMessage(scorePoints: number) {
   gameoverDiv.style.display = "block";
   (gameoverDiv as HTMLDivElement).innerText = `Game over, score:${scorePoints}`;
 }
