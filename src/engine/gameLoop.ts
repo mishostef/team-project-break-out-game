@@ -116,6 +116,7 @@ export class Game {
             changeBallDirection(this.ball, brick);
             this.bricks.splice(deleteBrickIndex, 1);
             this.scorePoints += BRICK_BONUS_POINTS;
+            document.getElementById("score").textContent = `Score: ${this.scorePoints.toString()}`;
         }
         if (this.elapsed > this.STEP_SIZE * 5) {
             this.elapsed = this.STEP_SIZE * 5;
@@ -152,7 +153,7 @@ export function collisionDetector(ball: Ball, board: Paddle, gameOver: boolean) 
     }
     if (isBallHittingTheFloor(ball, canvasView)) {
         gameOver = true;
-       // showGameOverMessage(this.s);
+        // showGameOverMessage(this.s);
     } else if (isBallHittingTheCeiling(ball)) {
         ball.velocity.y = Math.abs(ball.velocity.y);
     } else if (isBallHittingRightWall(ball, canvasView)) {
