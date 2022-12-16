@@ -1,18 +1,19 @@
-import { CanvasView } from "../view/CanvasView";
+import { CanvasView, canvasView } from "../view/CanvasView";
+
 import { Paddle } from "../figures/Paddle";
 import { Ball } from "../figures/Ball";
+import { Brick } from "../figures/Brick";
+
 import { move } from "./move";
-import {
-  BOARD_WIDTH,
-} from "../utils/constants";
+import { BOARD_WIDTH } from "../utils/constants";
 import {
     isBallHittingTheFloor, isBallHittingTheCeiling, isBallHittingRightWall,
     isBallHittingTheLeftWall,  isBallCollidingWithBoard
 } from "../utils/validators";
-import { showGameOverMessage } from "../app";
+import { showGameOverMessage } from "../utils/helpers";
 import { handleBoardHit } from "../physics/movement";
+import { scorePoints } from "../app";
 
-const canvasView = new CanvasView("gameCanvas");
 
 const input: { [code: string]: boolean } = {};
 
@@ -23,7 +24,7 @@ window.addEventListener("keyup", (event) => {
   input[event.code] = false;
 });
 //todo-ball, board, bricks->gameObjects{}
-export function gameLoop(ball, board, bricks, canvasView, gameOver) {
+export function gameLoop(ball: Ball, board: Paddle, bricks: Brick[], canvasView: CanvasView, gameOver: boolean) {
     if (input['ArrowLeft'] && (board.position.x > 0)) {
         board.velocity.x = -7;
         move(board, board.velocity);
@@ -39,14 +40,13 @@ export function gameLoop(ball, board, bricks, canvasView, gameOver) {
     move(ball, ball.velocity);
 }
 
-
 export function collisionDetector(ball: Ball, board: Paddle, gameOver: boolean) {
     if (isBallCollidingWithBoard(ball, board)) {
         handleBoardHit(ball, board);
     }
     if (isBallHittingTheFloor(ball, canvasView)) {
         gameOver = true;
-        showGameOverMessage();
+        showGameOverMessage(scorePoints);
     } else if (isBallHittingTheCeiling(ball)) {
         ball.velocity.y = Math.abs(ball.velocity.y);
     } else if (isBallHittingRightWall(ball, canvasView)) {

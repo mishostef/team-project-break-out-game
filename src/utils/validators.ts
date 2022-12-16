@@ -1,12 +1,10 @@
 import { Ball } from "../figures/Ball";
-import { Paddle } from "../figures/Paddle";
 import { CanvasView } from "../view/CanvasView";
 import {
   BALL_DIAMETER,
   BOARD_HEIGHT,
   BOARD_WIDTH,
-  BRICKS_END,
-  BRICK_WIDTH,
+  BRICKS_END
 } from "./constants";
 
 export function isBallHittingTheLeftWall(ball: Ball) {
