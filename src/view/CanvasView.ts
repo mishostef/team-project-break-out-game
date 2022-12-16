@@ -67,3 +67,5 @@ export class CanvasView {
     return this.ctx;
   }
 }
+
+export const canvasView = new CanvasView("gameCanvas");

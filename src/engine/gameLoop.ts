@@ -1,6 +1,9 @@
-import { CanvasView } from "../view/CanvasView";
+import { CanvasView, canvasView } from "../view/CanvasView";
+
 import { Paddle } from "../figures/Paddle";
 import { Ball } from "../figures/Ball";
+import { Brick } from "../figures/Brick";
+
 import { move } from "./move";
 import {
     BOARD_WIDTH, BRICK_BONUS_POINTS, INITIAL_BALL_X, INITIAL_BALL_Y,
@@ -11,12 +14,10 @@ import {
 } from "../utils/validators";
 import { showGameOverMessage } from "../app";
 import { changeBallDirection, handleBoardHit } from "../physics/movement";
-import { Brick } from "../figures/Brick";
 import { Vector } from "../Geometry/Vector";
 import { getHitBrickIndex } from "../physics/misc";
 import { createBricks } from "../utils/brickFactory";
 
-const canvasView = new CanvasView("gameCanvas");
 
 const input: { [code: string]: boolean } = {};
 
@@ -144,7 +145,6 @@ export function gameLoop(ball, board, bricks, canvasView, gameOver) {
     collisionDetector(ball, board, gameOver);
     move(ball);
 }
-
 
 export function collisionDetector(ball: Ball, board: Paddle, gameOver: boolean) {
     if (isBallCollidingWithBoard(ball, board)) {

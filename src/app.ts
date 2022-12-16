@@ -1,34 +1,38 @@
 import { Ball } from "./figures/Ball";
 import { Paddle } from "./figures/Paddle";
+
 import { Vector } from "./Geometry/Vector";
-import { changeBallDirection } from "./physics/movement";
+
 import { createBricks } from "./utils/brickFactory";
 import {
   INITIAL_BALL_X,
   INITIAL_BALL_Y,
-  BRICK_BONUS_POINTS,
-  BOARD_WIDTH,
-  BALL_DIAMETER,
-  BRICK_HEIGHT,
-  BRICK_WIDTH,
-  BOARD_HEIGHT,
-  EASY_LEVEl,
-  MEDIUM_LEVEL,
-  HARD_LEVEL,
+  EASY_LEVEl, 
 } from "./utils/constants";
 
-import { isBallNearBricks } from "./utils/validators";
 import { CanvasView } from "./view/CanvasView";
-import { getHitBrickIndex } from "./physics/misc";
-import { Game, gameLoop, GameObjects } from "./engine/gameLoop";
+import { Game,  GameObjects } from "./engine/gameLoop";
 
 const canvasView = new CanvasView("gameCanvas");
 const gameoverDiv = document.getElementById("gameOver");
 
 
 //const STEP_SIZE = 20;
+
+import { DOMView } from "./view/DOMView";
+import { setGameLevel } from "./utils/helpers";
+
+
+const dom = DOMView.getInstance();
+
+
+const boardImg = dom.getElement("#board") as HTMLImageElement;
+
+let lastTime = 0;
+let elapsed = 0;
+
 let GAME_DIFFICULTY = EASY_LEVEl;
-const boardImg = document.getElementById("board") as HTMLImageElement;
+
 const boardPosition = new Vector(
   canvasView.canvas.width / 2,
   canvasView.canvas.height - 100
@@ -41,7 +45,8 @@ let ballVelocity = new Vector(GAME_DIFFICULTY, GAME_DIFFICULTY);
 let ball = new Ball(ballPosition, "/assets/ball.png", ballVelocity);
 const input: { [code: string]: boolean } = {};
 
-let scorePoints = 0;
+let gameOver = false;
+export let scorePoints = 0;
 let isMouseActive = true;
 let lives = 3;
 const gameObjects: GameObjects = { ball, board, bricks }
@@ -54,9 +59,9 @@ window.addEventListener("keyup", (event) => {
   input[event.code] = false;
 });
 
-document.addEventListener("mousemove", (e) => {
-  if (isMouseActive) board.position.x = e.clientX;
-});
+dom.addHandler("mousemove", (e: MouseEvent) => {
+    if (isMouseActive) board.position.x = e.clientX;
+})
 
 window.oncontextmenu = (e) => {
   e.preventDefault();
@@ -73,10 +78,12 @@ document.getElementById("new-game").addEventListener("click", (e) => {
   game.startGame();
   gameoverDiv.style.display = "none";
 });
+
 playBtn.addEventListener("click", () => {
-  document.getElementById("container").style.display = "none";
-  document.getElementById("gameCanvas").style.display = "block";
-  const detailsBox = document.getElementById("details-box");
+  dom.getElement("#container").style.display = "none";
+  dom.getElement("#gameCanvas").style.display = "block";
+
+  const detailsBox = dom.getElement("#details-box");
   detailsBox.style.display = "flex";
   detailsBox.style.justifyContent = "space-around";
 
@@ -89,44 +96,27 @@ playBtn.addEventListener("click", () => {
   }
 });
 
-document.getElementById("setting-btn").addEventListener("click", () => {
-  const settingsContainer = document.getElementById("settings-container");
-  const container = document.getElementById("container");
+dom.getElement("#setting-btn").addEventListener("click", () => {
+  const settingsContainer = dom.getElement("#settings-container");
+  const container = dom.getElement("#container");
   settingsContainer.style.display = "block";
   container.style.display = "none";
-  document.getElementById("back-btn").addEventListener("click", () => {
+
+  dom.getElement("#back-btn").addEventListener("click", () => {
     settingsContainer.style.display = "none";
     container.style.display = "block";
   });
 
-  document.getElementById("play-sound-btn").addEventListener("click", () => {
+  dom.getElement("#play-sound-btn").addEventListener("click", () => {
     isPlayMusic = true;
-    (document.querySelector(".gg-check") as HTMLElement).style.display =
+    (dom.getElement(".gg-check") as HTMLElement).style.display =
       "block";
   });
 });
 
-document.getElementById("level").addEventListener("click", (e) => {
+dom.getElement("#level").addEventListener("click", (e) => {
   const input = (e.target as HTMLInputElement);
-  const level = input.id;
-
-  document.querySelectorAll('input').forEach((input) => {
-    input.checked = false;
-  })
-
-  input.checked = true;
-
-  switch (level) {
-    case "easy":
-      GAME_DIFFICULTY = EASY_LEVEl;
-      break;
-    case "medium":
-      GAME_DIFFICULTY = MEDIUM_LEVEL;
-      break;
-    case "hard":
-      GAME_DIFFICULTY = HARD_LEVEL;
-      break;
-  }
+  GAME_DIFFICULTY = setGameLevel(input);
 });
 
 export function showGameOverMessage(scorePoints: number) {

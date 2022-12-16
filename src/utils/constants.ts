@@ -27,3 +27,5 @@ export const BRICK_BONUS_POINTS = 10;
 export const EASY_LEVEl = 3;
 export const MEDIUM_LEVEL = 5;
 export const HARD_LEVEL = 8;
+
+export const STEP_SIZE = 20;
