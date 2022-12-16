@@ -1,9 +1,7 @@
 import { CanvasView, canvasView } from "../view/CanvasView";
-
 import { Paddle } from "../figures/Paddle";
 import { Ball } from "../figures/Ball";
 import { Brick } from "../figures/Brick";
-
 import { move } from "./move";
 import {
     BOARD_WIDTH, BRICK_BONUS_POINTS, INITIAL_BALL_X, INITIAL_BALL_Y,

@@ -2,7 +2,7 @@ import { Ball } from "../figures/Ball";
 import { Brick } from "../figures/Brick";
 import { Paddle } from "../figures/Paddle";
 import { BRICK_HEIGHT, BRICK_WIDTH, BALL_DIAMETER, BOARD_WIDTH } from "../utils/constants";
-import { Vector } from "../utils/vector";
+
 
 export function changeBallDirection(ball: Ball, brick: Brick) {
     const BRICK_DIAGONAL = Math.sqrt(BRICK_HEIGHT ** 2 + BRICK_WIDTH ** 2);

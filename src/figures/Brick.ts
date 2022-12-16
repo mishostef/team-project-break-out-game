@@ -1,4 +1,4 @@
-import { Vector } from "../utils/vector";
+import { Vector } from "../Geometry/Vector";
 
 export class Brick {
   private image: HTMLImageElement = new Image();

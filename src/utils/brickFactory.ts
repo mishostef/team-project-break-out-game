@@ -1,4 +1,5 @@
 import { Brick } from "../figures/Brick";
+import { Vector } from "../Geometry/Vector";
 import {
   BRICKS_COLS,
   BRICK_ROWS,
@@ -7,8 +8,6 @@ import {
   INITIAL_START_BRICK_LEFT,
   INITIAL_START_BRICK_RIGHT,
 } from "./constants";
-
-import { Vector } from "./vector";
 
 const bricksImage = [
   "/assets/brick-blue.png",
@@ -26,7 +25,7 @@ export function createBricks(): Brick[] {
 
   for (let row = 0; row < BRICK_ROWS; row++) {
     for (let col = 0; col < BRICKS_COLS; col++) {
-      const pos: Vector = { x, y };
+      const pos: Vector = new Vector(x, y);
 
       const randPos = (Math.random() * bricksImage.length) | 0;
       const brick = new Brick(pos, bricksImage[randPos]);

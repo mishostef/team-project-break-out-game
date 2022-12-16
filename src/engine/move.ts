@@ -1,4 +1,5 @@
-import { Vector } from "../utils/vector";
+//import { Vector } from "../utils/vector";
+import { Vector } from "../Geometry/Vector";
 
 export function move(gameObject: GameObject) {
   gameObject.position.x += gameObject.velocity.x;

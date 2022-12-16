@@ -1,4 +1,4 @@
-import { Vector } from "../utils/vector";
+import { Vector } from "../Geometry/Vector";
 import {
   BRICK_ROWS,
   BRICK_WIDTH,
@@ -33,10 +33,10 @@ export class CanvasView {
     for (let r = 0; r < BRICK_ROWS; r++) {
       for (let c = 0; c < bricks.length; c++) {
         const brick = bricks[c];
-        const pos: Vector = {
-          x: brick.position.x,
-          y: brick.position.y,
-        };
+        const pos: Vector = new Vector(
+          brick.position.x,
+          brick.position.y,
+        );
         this.drawImage(pos, brick.getImage(), BRICK_WIDTH, BRICK_HEIGHT);
       }
     }
@@ -44,7 +44,7 @@ export class CanvasView {
 
   drawBall(ball: Ball) {
     this.drawImage(
-      { x: ball.position.x - BALL_DIAMETER / 2, y: ball.position.y - BALL_DIAMETER / 2 },
+      new Vector(ball.position.x - BALL_DIAMETER / 2, ball.position.y - BALL_DIAMETER / 2),
       ball.getImage(),
       BALL_DIAMETER,
       BALL_DIAMETER
