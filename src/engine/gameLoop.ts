@@ -10,21 +10,17 @@ import {
     isBallHittingTheFloor, isBallHittingTheCeiling, isBallHittingRightWall,
     isBallHittingTheLeftWall, isBallCollidingWithBoard, isBallNearBricks
 } from "../utils/validators";
-import { showGameOverMessage } from "../app";
+import { showGameOverMessage } from "../utils/helpers";
 import { changeBallDirection, handleBoardHit } from "../physics/movement";
 import { Vector } from "../Geometry/Vector";
 import { getHitBrickIndex } from "../physics/misc";
 import { createBricks } from "../utils/brickFactory";
+import { explode } from "../effects/explosion";
+import { DOMView } from "../view/DOMView";
 
 
 const input: { [code: string]: boolean } = {};
 
-window.addEventListener("keydown", (event) => {
-    input[event.code] = true;
-});
-window.addEventListener("keyup", (event) => {
-    input[event.code] = false;
-});
 
 export interface GameObjects {
     ball: Ball, board: Paddle, bricks: Brick[]
@@ -36,14 +32,30 @@ export class Game {
     private board: Paddle;
     private bricks: Brick[];
     private scorePoints: number;
-    private readonly GAME_DIFFICULTY = 3;
+    public GAME_DIFFICULTY = 3;
     private readonly STEP_SIZE = 20;
     private lastTime: number;
     private elapsed: number;
     public gameOver: boolean;
+    private dom = DOMView.getInstance();
+    private isMouseActive = true;
     constructor(public canvasView: CanvasView, public lives: number) {
         this.scorePoints = 0;
         this.initializeGameObjects();
+
+        this.dom.addHandler("keydown", (event: KeyboardEvent) => {
+            input[event.code] = true;
+        });
+        this.dom.addHandler("keyup", (event: KeyboardEvent) => {
+            input[event.code] = false;
+        });
+        this.dom.addHandler("mousemove", (e: MouseEvent) => {
+            if (this.isMouseActive) this.board.position.x = e.clientX;
+        });
+        this.dom.addRightClickHandler((e) => {
+            e.preventDefault();
+            this.isMouseActive = false;
+        });
     }
 
     private initializeGameObjects() {
@@ -110,7 +122,8 @@ export class Game {
             ? getHitBrickIndex(this.bricks, this.ball)
             : -1;
         if (deleteBrickIndex != -1) {
-            const brick = this.bricks[deleteBrickIndex];
+            const brick = this.bricks[deleteBrickIndex];///
+            //explode()
             changeBallDirection(this.ball, brick);
             this.bricks.splice(deleteBrickIndex, 1);
             this.scorePoints += BRICK_BONUS_POINTS;
@@ -126,37 +139,5 @@ export class Game {
         if (this.bricks.length && !this.gameOver) {
             requestAnimationFrame(this.update.bind(this));
         }
-    }
-}
-
-export function gameLoop(ball, board, bricks, canvasView, gameOver) {
-    if (input['ArrowLeft'] && (board.position.x > 0)) {
-        board.velocity.x = -7;
-        move(board);
-    } else if (input['ArrowRight'] && (board.position.x + BOARD_WIDTH < canvasView.canvas.width)) {
-        board.velocity.x = 7;
-        move(board);
-    }
-    canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
-    canvasView.drawBricks(bricks);
-    canvasView.drawBoard(board);
-    canvasView.drawBall(ball);
-    collisionDetector(ball, board, gameOver);
-    move(ball);
-}
-
-export function collisionDetector(ball: Ball, board: Paddle, gameOver: boolean) {
-    if (isBallCollidingWithBoard(ball, board)) {
-        handleBoardHit(ball, board);
-    }
-    if (isBallHittingTheFloor(ball, canvasView)) {
-        gameOver = true;
-        // showGameOverMessage(this.s);
-    } else if (isBallHittingTheCeiling(ball)) {
-        ball.velocity.y = Math.abs(ball.velocity.y);
-    } else if (isBallHittingRightWall(ball, canvasView)) {
-        ball.velocity.x = - ball.velocity.x;
-    } else if (isBallHittingTheLeftWall(ball)) {
-        ball.velocity.x = Math.abs(ball.velocity.x);
     }
 }

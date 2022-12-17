@@ -2,13 +2,13 @@
 export type DOMElement = string | Node;
 
 export interface DOM {
-    createElement(type: string, attributes: object, ...content: DOMElement[]) : HTMLElement;
+    createElement(type: string, attributes: object, ...content: DOMElement[]): HTMLElement;
 
-    addElement(appendTo: string, element: HTMLElement) : void;
+    addElement(appendTo: string, element: HTMLElement): void;
 
-    getElement(selector: string) : any;
+    getElement(selector: string): any;
 
-    deleteElement(selector: string) : void;
+    deleteElement(selector: string): void;
 }
 
 export class DOMView implements DOM {
@@ -31,7 +31,7 @@ export class DOMView implements DOM {
   * @param  { ...(string | Node) } content 
   * @returns { HTMLElement } Returns the created element
   */
-    createElement(type: string, attributes: object, ...content: DOMElement[]) : HTMLElement {
+    createElement(type: string, attributes: object, ...content: DOMElement[]): HTMLElement {
         const element = document.createElement(type);
 
         if (attributes) {
@@ -55,7 +55,7 @@ export class DOMView implements DOM {
     addElement(appendTo: string, element: HTMLElement) {
         document.querySelector(appendTo).append(element);
     }
-    
+
     getElement(selector: string): HTMLElement {
         let value = document.querySelector(selector) as HTMLElement;
         return value;
@@ -65,7 +65,15 @@ export class DOMView implements DOM {
         element.remove();
     }
 
-    addHandler(event: string, callback: EventListener) {
-        document.addEventListener(event, callback);
+    addHandler(event: string, callback: EventListener, selector?: string) {
+        if (selector) {
+            document.querySelector(selector).addEventListener(event, callback)
+        } else {
+            document.addEventListener(event, callback);
+        }
+    }
+
+    addRightClickHandler(callback: EventListener) {
+        window.oncontextmenu = callback;
     }
 }
