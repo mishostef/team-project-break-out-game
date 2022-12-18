@@ -1,4 +1,3 @@
-//import { Vector } from "../utils/vector";
 import { Vector } from "../Geometry/Vector";
 
 export function move(gameObject: GameObject) {

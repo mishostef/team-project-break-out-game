@@ -25,4 +25,3 @@ export function showGameOverMessage(scorePoints: number) {
     gameoverDiv.style.display = "block";
     (gameoverDiv as HTMLDivElement).innerText = `Game over, score:${scorePoints}`;
   }
-
