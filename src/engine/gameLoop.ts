@@ -10,7 +10,7 @@ import {
     isBallHittingTheFloor, isBallHittingTheCeiling, isBallHittingRightWall,
     isBallHittingTheLeftWall, isBallCollidingWithBoard, isBallNearBricks
 } from "../utils/validators";
-import { showGameOverMessage } from "../utils/helpers";
+import { setGameLevel, showGameOverMessage } from "../utils/helpers";
 import { changeBallDirection, handleBoardHit } from "../physics/movement";
 import { Vector } from "../Geometry/Vector";
 import { getHitBrickIndex } from "../physics/misc";
@@ -31,7 +31,7 @@ export class Game {
     private ball: Ball;
     private board: Paddle;
     private bricks: Brick[];
-    private scorePoints: number;
+    public scorePoints: number;
     public GAME_DIFFICULTY = 3;
     private readonly STEP_SIZE = 20;
     private lastTime: number;
@@ -39,8 +39,10 @@ export class Game {
     public gameOver: boolean;
     private dom = DOMView.getInstance();
     private isMouseActive = true;
+    private maxLives = 3;
     constructor(public canvasView: CanvasView, public lives: number) {
         this.scorePoints = 0;
+        this.maxLives = lives;
         this.initializeGameObjects();
 
         this.dom.addHandler("keydown", (event: KeyboardEvent) => {
@@ -56,6 +58,11 @@ export class Game {
             e.preventDefault();
             this.isMouseActive = false;
         });
+        this.dom.getElement("#level").addEventListener("click", (e) => {
+            const input = (e.target as HTMLInputElement);
+            this.GAME_DIFFICULTY = setGameLevel(input);
+        });
+
     }
 
     private initializeGameObjects() {
@@ -98,7 +105,14 @@ export class Game {
         if (isBallHittingTheFloor(this.ball, this.canvasView)) {
             this.lives--;//
             this.gameOver = true;
-            if (this.lives === 0) { showGameOverMessage(this.scorePoints); }
+            if (this.lives === 0) {
+                showGameOverMessage(this.scorePoints); setTimeout(() => {
+                    this.dom.showInitialScreen();
+                    this.lives = this.maxLives;
+                    this.scorePoints = 0;
+                }, 3000);
+
+            }
             document.getElementById("life").innerText = this.lives.toString();
         } else if (isBallHittingTheCeiling(this.ball)) {
             this.ball.velocity.y = Math.abs(this.ball.velocity.y);
@@ -110,6 +124,8 @@ export class Game {
     }
 
     startGame() {
+        document.getElementById("score").textContent = `Score: ${this.scorePoints.toString()}`;
+        document.getElementById("life").innerText = this.lives.toString();
         this.initializeGameObjects();
         this.update(performance.now());
     }

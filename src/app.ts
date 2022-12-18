@@ -39,6 +39,8 @@ playBtn.addEventListener("click", () => {
   const detailsBox = dom.getElement("#details-box");
   detailsBox.style.display = "flex";
   detailsBox.style.justifyContent = "space-around";
+  game.lives = lives;
+  game.scorePoints = 0;
   game.startGame();
 
   if (isPlayingMusic) {
@@ -47,6 +49,7 @@ playBtn.addEventListener("click", () => {
     music.play();
   }
 });
+
 
 dom.getElement("#setting-btn").addEventListener("click", () => {
   const settingsContainer = dom.getElement("#settings-container");
@@ -65,9 +68,3 @@ dom.getElement("#setting-btn").addEventListener("click", () => {
       "block";
   });
 });
-
-dom.getElement("#level").addEventListener("click", (e) => {
-  const input = (e.target as HTMLInputElement);
-  GAME_DIFFICULTY = setGameLevel(input);
-});
-

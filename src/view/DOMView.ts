@@ -76,4 +76,10 @@ export class DOMView implements DOM {
     addRightClickHandler(callback: EventListener) {
         window.oncontextmenu = callback;
     }
+    showInitialScreen() {
+        this.getElement("#container").style.display = "block";
+        this.getElement("#gameCanvas").style.display = "none";
+        this.getElement("#details-box").style.display = "none";
+        this.getElement("#gameOver").style.display = "none"
+    }
 }
