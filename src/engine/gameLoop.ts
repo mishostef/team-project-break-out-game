@@ -39,11 +39,16 @@ export class Game {
     private dom = DOMView.getInstance();
     private isMouseActive = true;
     private maxLives = 3;
+
+
     constructor(public canvasView: CanvasView, public lives: number) {
         this.scorePoints = 0;
         this.maxLives = lives;
         this.initializeGameObjects();
+        this.addHandlers();
+    }
 
+    private addHandlers() {
         this.dom.addHandler("keydown", (event: KeyboardEvent) => {
             input[event.code] = true;
         });
@@ -51,7 +56,8 @@ export class Game {
             input[event.code] = false;
         });
         this.dom.addHandler("mousemove", (e: MouseEvent) => {
-            if (this.isMouseActive) this.board.position.x = e.clientX;
+            if (this.isMouseActive)
+                this.board.position.x = e.clientX;
         });
         this.dom.addRightClickHandler((e) => {
             e.preventDefault();
@@ -61,7 +67,6 @@ export class Game {
             const input = (e.target as HTMLInputElement);
             this.GAME_DIFFICULTY = setGameLevel(input);
         }, "#level");
-
     }
 
     private initializeGameObjects() {
@@ -126,7 +131,7 @@ export class Game {
     startGame() {
         if (this.lives > 1) {
             this.dom.showNewGameButton();
-        }else{
+        } else {
             this.dom.hideNewGameButton();
         }
         this.dom.setScore(this.scorePoints);

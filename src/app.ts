@@ -6,8 +6,6 @@ const canvasView = new CanvasView("gameCanvas");
 const dom = DOMView.getInstance();
 let lives = 3;
 let game = new Game(canvasView, lives);
-
-const playBtn = dom.getPlayButton();
 let isPlayingMusic = false;
 
 dom.addHandler("click", () => {
@@ -15,7 +13,7 @@ dom.addHandler("click", () => {
   dom.hideGameOverMessage();
 }, "#new-game");
 
-playBtn.addEventListener("click", () => {
+dom.addHandler("click", () => {
   dom.initGame();
   game.lives = lives;
   game.scorePoints = 0;
@@ -26,13 +24,13 @@ playBtn.addEventListener("click", () => {
     music.volume = 0.1;
     music.play();
   }
-});
+}, "#play-btn");
 
-dom.getElement("#setting-btn").addEventListener("click", () => {
+dom.addHandler("click", () => {
   dom.showSettingsMenu();
   dom.addBackButtonHandler();
   dom.addHandler("click", () => {
     isPlayingMusic = true;
     dom.showIcon();
   }, "#play-sound-btn");
-});
+}, "#setting-btn");
