@@ -26,7 +26,6 @@ export interface GameObjects {
     ball: Ball, board: Paddle, bricks: Brick[]
 }
 
-const boardImg = document.getElementById("board") as HTMLImageElement;
 export class Game {
     private ball: Ball;
     private board: Paddle;
@@ -58,10 +57,10 @@ export class Game {
             e.preventDefault();
             this.isMouseActive = false;
         });
-        this.dom.getElement("#level").addEventListener("click", (e) => {
+        this.dom.addHandler("click", (e) => {
             const input = (e.target as HTMLInputElement);
             this.GAME_DIFFICULTY = setGameLevel(input);
-        });
+        }, "#level");
 
     }
 
@@ -71,7 +70,7 @@ export class Game {
             canvasView.canvas.width / 2,
             canvasView.canvas.height - 100
         );
-        this.board = new Paddle(boardPosition, boardImg);
+        this.board = new Paddle(boardPosition, this.dom.getBoardImage());
         const ballPosition = new Vector(INITIAL_BALL_X, INITIAL_BALL_Y);
         this.ball = new Ball(ballPosition, "/assets/ball.png");
         this.ball.velocity = new Vector(this.GAME_DIFFICULTY, this.GAME_DIFFICULTY);
@@ -103,7 +102,7 @@ export class Game {
             handleBoardHit(this.ball, this.board);
         }
         if (isBallHittingTheFloor(this.ball, this.canvasView)) {
-            this.lives--;//
+            this.lives--;
             this.gameOver = true;
             if (this.lives === 0) {
                 showGameOverMessage(this.scorePoints); setTimeout(() => {
@@ -125,7 +124,11 @@ export class Game {
     }
 
     startGame() {
-        this.dom.showNewGameButton();
+        if (this.lives > 1) {
+            this.dom.showNewGameButton();
+        }else{
+            this.dom.hideNewGameButton();
+        }
         this.dom.setScore(this.scorePoints);
         this.dom.setLives(this.lives);
         this.initializeGameObjects();

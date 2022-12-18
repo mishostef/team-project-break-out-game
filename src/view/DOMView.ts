@@ -73,6 +73,9 @@ export class DOMView implements DOM {
         }
     }
 
+    addBackButtonHandler() {
+        this.addHandler("click", () => { this.hideSettingsMenu(); }, "#back-btn");
+    }
     addRightClickHandler(callback: EventListener) {
         window.oncontextmenu = callback;
     }
@@ -81,6 +84,13 @@ export class DOMView implements DOM {
         this.getElement("#gameCanvas").style.display = "none";
         this.getElement("#details-box").style.display = "none";
         this.getElement("#gameOver").style.display = "none"
+    }
+    initGame() {
+        this.getElement("#container").style.display = "none";
+        this.getElement("#gameCanvas").style.display = "block";
+        const detailsBox = this.getElement("#details-box");
+        detailsBox.style.display = "flex";
+        detailsBox.style.justifyContent = "space-around";
     }
     setScore(scorePoints: number) {
         this.getElement("#score").textContent = `Score: ${scorePoints.toString()}`;
@@ -93,5 +103,30 @@ export class DOMView implements DOM {
     }
     hideNewGameButton() {
         (this.getElement("#new-game") as HTMLButtonElement).style.display = "none";
+    }
+    getBoardImage() {
+        return this.getElement("#board") as HTMLImageElement;
+    }
+    showSettingsMenu() {
+        const settingsContainer = this.getElement("#settings-container");
+        const container = this.getElement("#container");
+        settingsContainer.style.display = "block";
+        container.style.display = "none";
+    }
+    hideSettingsMenu() {
+        const settingsContainer = this.getElement("#settings-container");
+        const container = this.getElement("#container");
+        settingsContainer.style.display = "none";
+        container.style.display = "block";
+    }
+    showIcon() {
+        (this.getElement(".gg-check") as HTMLElement).style.display =
+            "block";
+    }
+    getPlayButton() {
+        return this.getElement("#play-btn");
+    }
+    hideGameOverMessage() {
+        this.getElement("#gameOver").style.display = "none";
     }
 }
