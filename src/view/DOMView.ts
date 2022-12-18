@@ -82,4 +82,10 @@ export class DOMView implements DOM {
         this.getElement("#details-box").style.display = "none";
         this.getElement("#gameOver").style.display = "none"
     }
+    setScore(scorePoints: number) {
+        this.getElement("#score").textContent = `Score: ${scorePoints.toString()}`;
+    }
+    setLives(lives: number) {
+        this.getElement("#life").innerText = lives.toString();
+    }
 }

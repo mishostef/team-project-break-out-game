@@ -110,10 +110,11 @@ export class Game {
                     this.dom.showInitialScreen();
                     this.lives = this.maxLives;
                     this.scorePoints = 0;
-                }, 3000);
+                    (document.getElementById("new-game") as HTMLButtonElement).style.display = "none";
+                }, 1500);
 
             }
-            document.getElementById("life").innerText = this.lives.toString();
+            this.dom.setLives(this.lives);
         } else if (isBallHittingTheCeiling(this.ball)) {
             this.ball.velocity.y = Math.abs(this.ball.velocity.y);
         } else if (isBallHittingRightWall(this.ball, this.canvasView)) {
@@ -124,8 +125,9 @@ export class Game {
     }
 
     startGame() {
-        document.getElementById("score").textContent = `Score: ${this.scorePoints.toString()}`;
-        document.getElementById("life").innerText = this.lives.toString();
+        (document.getElementById("new-game") as HTMLButtonElement).style.display = "block";
+        this.dom.setScore(this.scorePoints);
+        this.dom.setLives(this.lives);
         this.initializeGameObjects();
         this.update(performance.now());
     }
@@ -143,7 +145,7 @@ export class Game {
             changeBallDirection(this.ball, brick);
             this.bricks.splice(deleteBrickIndex, 1);
             this.scorePoints += BRICK_BONUS_POINTS;
-            document.getElementById("score").textContent = `Score: ${this.scorePoints.toString()}`;
+            this.dom.setScore(this.scorePoints);
         }
         if (this.elapsed > this.STEP_SIZE * 5) {
             this.elapsed = this.STEP_SIZE * 5;
