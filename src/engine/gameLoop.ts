@@ -110,7 +110,7 @@ export class Game {
                     this.dom.showInitialScreen();
                     this.lives = this.maxLives;
                     this.scorePoints = 0;
-                    (document.getElementById("new-game") as HTMLButtonElement).style.display = "none";
+                    this.dom.hideNewGameButton();
                 }, 1500);
 
             }
@@ -125,7 +125,7 @@ export class Game {
     }
 
     startGame() {
-        (document.getElementById("new-game") as HTMLButtonElement).style.display = "block";
+        this.dom.showNewGameButton();
         this.dom.setScore(this.scorePoints);
         this.dom.setLives(this.lives);
         this.initializeGameObjects();

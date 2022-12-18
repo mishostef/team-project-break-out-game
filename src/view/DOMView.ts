@@ -88,4 +88,10 @@ export class DOMView implements DOM {
     setLives(lives: number) {
         this.getElement("#life").innerText = lives.toString();
     }
+    showNewGameButton() {
+        (this.getElement("#new-game") as HTMLButtonElement).style.display = "block";
+    }
+    hideNewGameButton() {
+        (this.getElement("#new-game") as HTMLButtonElement).style.display = "none";
+    }
 }
