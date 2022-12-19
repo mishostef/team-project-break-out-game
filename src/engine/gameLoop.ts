@@ -4,7 +4,7 @@ import { Ball } from "../figures/ball";
 import { Brick } from "../figures/brick";
 import { move } from "./move";
 import {
-    BOARD_WIDTH, BRICK_BONUS_POINTS, INITIAL_BALL_X, INITIAL_BALL_Y,
+    BOARD_WIDTH, BRICK_BONUS_POINTS, BRICK_HEIGHT, BRICK_WIDTH, INITIAL_BALL_X, INITIAL_BALL_Y,
 } from "../utils/constants";
 import {
     isBallHittingTheFloor, isBallHittingTheCeiling, isBallHittingRightWall,
@@ -15,12 +15,12 @@ import { changeBallDirection, handleBoardHit } from "../physics/movement";
 import { Vector } from "../geometry/vector";
 import { getHitBrickIndex } from "../physics/misc";
 import { createBricks } from "../utils/brickFactory";
-import { explode } from "../effects/explosion";
+import { createParticles } from "../effects/explosion";
 import { DOMView } from "../view/DOMView";
 
 
 const input: { [code: string]: boolean } = {};
-
+let particles = [];
 
 export interface GameObjects {
     ball: Ball, board: Paddle, bricks: Brick[]
@@ -103,13 +103,19 @@ export class Game {
             this.board.velocity.x = 7;
             move(this.board);
         }
-        if (this.bricks.length == 0) {
-
-        }
         canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
         canvasView.drawBricks(this.bricks);
         canvasView.drawBoard(this.board);
         canvasView.drawBall(this.ball);
+        if (particles.length){
+            particles.forEach((particle, i) => {
+                if (particle.alpha <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    particle.update();
+                }
+            });
+        }
         this.collisionDetector();
         if (!this.gameOver) {
             move(this.ball);
@@ -164,8 +170,9 @@ export class Game {
             ? getHitBrickIndex(this.bricks, this.ball)
             : -1;
         if (deleteBrickIndex != -1) {
-            const brick = this.bricks[deleteBrickIndex];///
-            ///explode(brick);
+            const brick = this.bricks[deleteBrickIndex];
+            particles = createParticles(brick);
+            console.log('particles', particles);
             changeBallDirection(this.ball, brick);
             this.bricks.splice(deleteBrickIndex, 1);
             this.scorePoints += BRICK_BONUS_POINTS;
