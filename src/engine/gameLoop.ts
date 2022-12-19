@@ -117,6 +117,7 @@ export class Game {
                 showGameOverMessage(this.scorePoints); setTimeout(() => {
                     this.dom.showInitialScreen();
                     this.lives = this.maxLives;
+                    this.bricks = createBricks();
                     this.scorePoints = 0;
                     this.dom.hideNewGameButton();
                 }, 1500);
