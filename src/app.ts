@@ -1,8 +1,8 @@
-import { CanvasView } from "./view/canvasView";
+import { canvasView } from "./view/canvasView";
 import { Game } from "./engine/gameLoop";
 import { DOMView } from "./view/DOMView";
 
-const canvasView = new CanvasView("gameCanvas");
+//const canvasView = new CanvasView("gameCanvas");
 const dom = DOMView.getInstance();
 let lives = 3;
 let game = new Game(canvasView, lives);
