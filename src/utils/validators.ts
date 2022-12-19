@@ -1,5 +1,5 @@
-import { Ball } from "../figures/Ball";
-import { CanvasView } from "../view/CanvasView";
+import { Ball } from "../figures/ball";
+import { CanvasView } from "../view/canvasView";
 import {
   BALL_DIAMETER,
   BOARD_HEIGHT,

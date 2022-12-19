@@ -1,4 +1,4 @@
-import { Vector } from "../Geometry/Vector";
+import { Vector } from "../geometry/vector";
 
 export class Ball {
   private image: HTMLImageElement = new Image();

@@ -1,4 +1,4 @@
-import { CanvasView } from "./view/CanvasView";
+import { CanvasView } from "./view/canvasView";
 import { Game } from "./engine/gameLoop";
 import { DOMView } from "./view/DOMView";
 

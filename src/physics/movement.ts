@@ -1,6 +1,6 @@
-import { Ball } from "../figures/Ball";
-import { Brick } from "../figures/Brick";
-import { Paddle } from "../figures/Paddle";
+import { Ball } from "../figures/ball";
+import { Brick } from "../figures/brick";
+import { Paddle } from "../figures/paddle";
 import { BRICK_HEIGHT, BRICK_WIDTH, BALL_DIAMETER, BOARD_WIDTH } from "../utils/constants";
 
 

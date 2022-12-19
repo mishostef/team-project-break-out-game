@@ -1,4 +1,4 @@
-import { Point } from "./Interfaces";
+import { Point } from "./interfaces";
 
 export class Vector implements Point {
   x: number;

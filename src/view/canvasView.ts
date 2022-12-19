@@ -1,4 +1,4 @@
-import { Vector } from "../Geometry/Vector";
+import { Vector } from "../geometry/vector";
 import {
   BRICK_ROWS,
   BRICK_WIDTH,
@@ -7,9 +7,9 @@ import {
   BOARD_HEIGHT,
   BALL_DIAMETER,
 } from "../utils/constants";
-import { Ball } from "../figures/Ball";
-import { Brick } from "../figures/Brick";
-import { Paddle } from "../figures/Paddle";
+import { Ball } from "../figures/ball";
+import { Brick } from "../figures/brick";
+import { Paddle } from "../figures/paddle";
 
 export class CanvasView {
   private ctx: CanvasRenderingContext2D;
