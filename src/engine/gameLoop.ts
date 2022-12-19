@@ -92,6 +92,9 @@ export class Game {
             this.board.velocity.x = 7;
             move(this.board);
         }
+        if (this.bricks.length == 0) {
+
+        }
         canvasView.getContext().clearRect(0, 0, canvasView.canvas.width, canvasView.canvas.height);
         canvasView.drawBricks(this.bricks);
         canvasView.drawBoard(this.board);
@@ -131,6 +134,7 @@ export class Game {
     startGame() {
         if (this.lives > 1) {
             this.dom.showNewGameButton();
+            this.dom.hideCongratulations();
         } else {
             this.dom.hideNewGameButton();
         }
@@ -164,6 +168,8 @@ export class Game {
         }
         if (this.bricks.length && !this.gameOver) {
             requestAnimationFrame(this.update.bind(this));
+        } else if (this.bricks.length === 0) {
+            this.dom.showCongratulations();
         }
     }
 }

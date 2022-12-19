@@ -83,7 +83,7 @@ export class DOMView implements DOM {
         this.getElement("#container").style.display = "block";
         this.getElement("#gameCanvas").style.display = "none";
         this.getElement("#details-box").style.display = "none";
-        this.getElement("#gameOver").style.display = "none"
+        this.getElement("#gameOver").style.display = "none";
     }
     initGame() {
         this.getElement("#container").style.display = "none";
@@ -101,8 +101,14 @@ export class DOMView implements DOM {
     showNewGameButton() {
         (this.getElement("#new-game") as HTMLButtonElement).style.display = "block";
     }
+    showCongratulations() {
+        this.getElement("#gameWin").style.display = "block";
+    }
     hideNewGameButton() {
         (this.getElement("#new-game") as HTMLButtonElement).style.display = "none";
+    }
+    hideCongratulations() {
+        this.getElement("#gameWin").style.display = "none";
     }
     getBoardImage() {
         return this.getElement("#board") as HTMLImageElement;

@@ -123,3 +123,17 @@ label {
   margin: 30px auto;
   width: 30%;
 }
+
+#gameWin {
+  padding: 10px;
+  background: azure;
+  width: 30%;
+  margin: auto;
+  height: 70px;
+  position: absolute;
+  left: 35%;
+  top: 15em;
+  text-align: center;
+  font-size: 24px;
+  text-transform: uppercase;
+}
