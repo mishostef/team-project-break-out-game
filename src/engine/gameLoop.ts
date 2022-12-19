@@ -56,8 +56,17 @@ export class Game {
             input[event.code] = false;
         });
         this.dom.addHandler("mousemove", (e: MouseEvent) => {
-            if (this.isMouseActive)
-                this.board.position.x = e.clientX;
+            if (this.isMouseActive) {
+                const positionInfo = canvasView.canvas.getBoundingClientRect();
+                const width = positionInfo.width;
+                let mouseX = e.offsetX;
+                if (mouseX < canvasView.canvas.offsetLeft) {
+                    mouseX = 0;
+                } else if (mouseX > width) {
+                    mouseX = canvasView.canvas.width - BOARD_WIDTH;
+                }
+                this.board.position.x = mouseX;
+            }
         });
         this.dom.addRightClickHandler((e) => {
             e.preventDefault();
@@ -102,8 +111,9 @@ export class Game {
         canvasView.drawBoard(this.board);
         canvasView.drawBall(this.ball);
         this.collisionDetector();
-        if (!this.gameOver)
+        if (!this.gameOver) {
             move(this.ball);
+        }
     }
 
     collisionDetector() {
