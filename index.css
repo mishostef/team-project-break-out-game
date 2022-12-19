@@ -137,3 +137,35 @@ label {
   font-size: 24px;
   text-transform: uppercase;
 }
+
+@media only screen and (max-width: 900px) {
+  .setting-row {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+
+  #settings-container {
+    width: 80%;
+  }
+
+  .setting-row {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  #level {
+    flex-direction: column;
+  }
+  
+  .back-container {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .btn {
+    width: 100%;
+  }
+}

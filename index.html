@@ -1,84 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TS Base</title>
     <script src="/dist/app.bundle.js" defer></script>
     <link rel="stylesheet" href="./index.css" />
-    <link href='https://css.gg/check.css' rel='stylesheet' />
-</head>
+    <link href="https://css.gg/check.css" rel="stylesheet" />
+  </head>
 
-<body>
+  <body>
     <div id="details-box">
-        <p id="score">Score: 0</p>
-        <p id="container-life">Life: <span id="life">3</span></p>
+      <p id="score">Score: 0</p>
+      <p id="container-life">Life: <span id="life">3</span></p>
     </div>
-    <button id="new-game" class="btn" style="display: none;">new game</button>
-    <canvas id="gameCanvas" style="display: none;" width="1200" height="600"></canvas>
+    <button id="new-game" class="btn" style="display: none">new game</button>
+    <canvas
+      id="gameCanvas"
+      style="display: none"
+      width="1200"
+      height="600"
+    ></canvas>
     <div id="gameOver"></div>
-    <div id="gameWin" style="display: none;">You win, congratulations!</div>
-    <img id="board" src="./assets/paddle.png" style="display: none;" alt="no Paddle img">
+    <div id="gameWin" style="display: none">You win, congratulations!</div>
+    <img
+      id="board"
+      src="./assets/paddle.png"
+      style="display: none"
+      alt="no Paddle img"
+    />
     <div id="container">
-        <h1 id="title">Team Project - Breakout Game</h1>
+      <h1 id="title">Team Project - Breakout Game</h1>
 
-        <p id="description">
-            In the game, a layer of bricks lines the top third of the screen. A ball travels across the screen,
-            bouncing
-            off the top and side walls of the screen. When a brick is hit, the ball bounces away and the brick is
-            destroyed. The player loses a turn when the ball touches the bottom of the screen. To prevent this from
-            happening, the player has a movable paddle to bounce the ball upward and back into play.
-        </p>
+      <p id="description">
+        In the game, a layer of bricks lines the top third of the screen. A ball
+        travels across the screen, bouncing off the top and side walls of the
+        screen. When a brick is hit, the ball bounces away and the brick is
+        destroyed. The player loses a turn when the ball touches the bottom of
+        the screen. To prevent this from happening, the player has a movable
+        paddle to bounce the ball upward and back into play.
+      </p>
 
-        <div class="play-container">
-            <button class="btn" id="play-btn">Play Game</button>
-            <button class="btn" id="setting-btn">Settings</button>
-        </div>
+      <div class="play-container">
+        <button class="btn" id="play-btn">Play Game</button>
+        <button class="btn" id="setting-btn">Settings</button>
+      </div>
     </div>
 
     <div id="settings-container">
-        <div id="setting-row">
-            <h2>Settings</h2>
-            <div class="setting-row">
-                <span>Mouse Tracking</span>
-                <div>
-                    <button>Yes</button>
-                    <button>No</button>
-                </div>
-            </div>
-        </div>
-
+      <div id="setting-row">
+        <h2>Settings</h2>
         <div class="setting-row">
-            <span>Sound</span>
-            <i class="gg-check" style="display: none;"></i>
-            <div>
-                <button id="play-sound-btn">Yes</button>
-                <button>No</button>
-            </div>
+          <span>Mouse Tracking</span>
+          <div>
+            <button>Yes</button>
+            <button>No</button>
+          </div>
         </div>
+      </div>
 
-
-        <div class="setting-row">
-            <span>Level</span>
-            <div id="level">
-                <label>Easy</label>
-                <input type="checkbox" class="radio" id="easy" name="level" value="Easy" />
-
-                <label>Medium</label>
-                <input type="checkbox" class="radio" id="medium" name="level" value="Medium" />
-
-                <label>Hard</label>
-                <input type="checkbox" class="radio" id="hard" name="level" value="Hard" />
-            </div>
+      <div class="setting-row">
+        <span>Sound</span>
+        <i class="gg-check" style="display: none"></i>
+        <div>
+          <button id="play-sound-btn">Yes</button>
+          <button>No</button>
         </div>
+      </div>
 
-        <div id="back-container">
-            <button class="btn" id="back-btn">Back</button>
+      <div class="setting-row">
+        <span>Level</span>
+        <div id="level">
+          <div class="level-row">
+            <label>Easy</label>
+            <input
+              type="checkbox"
+              class="radio"
+              id="easy"
+              name="level"
+              value="Easy"
+            />
+          </div>
+
+          <div class="level-row">
+            <label>Medium</label>
+            <input
+              type="checkbox"
+              class="radio"
+              id="medium"
+              name="level"
+              value="Medium"
+            />
+          </div>
+
+          <div class="level-row">
+            <label>Hard</label>
+            <input
+              type="checkbox"
+              class="radio"
+              id="hard"
+              name="level"
+              value="Hard"
+            />
+          </div>
         </div>
+      </div>
+
+      <div id="back-container">
+        <button class="btn" id="back-btn">Back</button>
+      </div>
     </div>
-
-</body>
-
+  </body>
 </html>
