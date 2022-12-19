@@ -1,7 +1,7 @@
-import { CanvasView, canvasView } from "../view/CanvasView";
-import { Paddle } from "../figures/Paddle";
-import { Ball } from "../figures/Ball";
-import { Brick } from "../figures/Brick";
+import { CanvasView, canvasView } from "../view/canvasView";
+import { Paddle } from "../figures/paddle";
+import { Ball } from "../figures/ball";
+import { Brick } from "../figures/brick";
 import { move } from "./move";
 import {
     BOARD_WIDTH, BRICK_BONUS_POINTS, INITIAL_BALL_X, INITIAL_BALL_Y,
@@ -12,7 +12,7 @@ import {
 } from "../utils/validators";
 import { setGameLevel, showGameOverMessage } from "../utils/helpers";
 import { changeBallDirection, handleBoardHit } from "../physics/movement";
-import { Vector } from "../Geometry/Vector";
+import { Vector } from "../geometry/vector";
 import { getHitBrickIndex } from "../physics/misc";
 import { createBricks } from "../utils/brickFactory";
 import { explode } from "../effects/explosion";
@@ -104,7 +104,6 @@ export class Game {
             move(this.ball);
     }
 
-
     collisionDetector() {
         if (isBallCollidingWithBoard(this.ball, this.board)) {
             handleBoardHit(this.ball, this.board);
@@ -130,7 +129,7 @@ export class Game {
             this.ball.velocity.x = Math.abs(this.ball.velocity.x);
         }
     }
-
+//
     startGame() {
         if (this.lives > 1) {
             this.dom.showNewGameButton();

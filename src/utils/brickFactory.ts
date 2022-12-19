@@ -1,5 +1,5 @@
-import { Brick } from "../figures/Brick";
-import { Vector } from "../Geometry/Vector";
+import { Brick } from "../figures/brick";
+import { Vector } from "../geometry/vector";
 import {
   BRICKS_COLS,
   BRICK_ROWS,
