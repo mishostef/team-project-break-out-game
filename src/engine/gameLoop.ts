@@ -70,7 +70,9 @@ export class Game {
     }
 
     private initializeGameObjects() {
-        this.bricks = createBricks();
+        if (this.bricks == undefined || this.bricks && this.bricks.length == 0 && this.lives > 0) {
+            this.bricks = createBricks();
+        }
         const boardPosition = new Vector(
             canvasView.canvas.width / 2,
             canvasView.canvas.height - 100
@@ -126,7 +128,7 @@ export class Game {
             this.ball.velocity.x = Math.abs(this.ball.velocity.x);
         }
     }
-//
+    //
     startGame() {
         if (this.lives > 1) {
             this.dom.showNewGameButton();
@@ -148,7 +150,7 @@ export class Game {
             : -1;
         if (deleteBrickIndex != -1) {
             const brick = this.bricks[deleteBrickIndex];///
-            //explode()
+            ///explode(brick);
             changeBallDirection(this.ball, brick);
             this.bricks.splice(deleteBrickIndex, 1);
             this.scorePoints += BRICK_BONUS_POINTS;

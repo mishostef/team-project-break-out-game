@@ -1,21 +1,20 @@
-/* Get the canvas  */
-var canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
+import { Brick } from "../figures/brick";
+import { BRICK_HEIGHT, BRICK_WIDTH } from "../utils/constants";
+import { canvasView } from "../view/canvasView";
 
-/* Get the height and width of the window */
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+/* Get the canvas  */
+var canvas = canvasView
+
 
 /* Get the 2D context of the canvas  */
-var ctx = canvas.getContext("2d");
-
-/* Fills or sets the color,gradient,pattern */
+var ctx = canvas.getContext();/* Fills or sets the color,gradient,pattern */
 ctx.fillStyle = "white";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-ctx.font = "50px Arial";
+//ctx.fillRect(0, 0, canvas.width, canvas.height);
+//ctx.font = "50px Arial";
 ctx.fillStyle = "green";
 
 /* Writes the required text  */
-ctx.fillText("GFG", 500, 350)
+//ctx.fillText("GFG", 500, 350)
 let particles = [];
 
 /* Initialize particle object  */
@@ -59,7 +58,7 @@ export class Particle {
     execution in intervals*/
 
 /* Particle explosion function */
-export function explode() {
+export function explode(brick: Brick) {
 
     setTimeout(() => {
         for (let i = 0; i <= 150; i++) {
@@ -71,14 +70,14 @@ export function explode() {
             /* Adds new items like particle*/
             particles.push(particle);
         }
-        explode();
+        explode(brick);
     }, 3000);
 
 
     /* Clears the given pixels in the rectangle */
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, BRICK_WIDTH, BRICK_HEIGHT);
+    ctx.fillStyle = "transparent";
+    ctx.fillRect(brick.position.x, brick.position.y, BRICK_WIDTH, BRICK_HEIGHT);
     particles.forEach((particle, i) => {
         if (particle.alpha <= 0) {
             particles.splice(i, 1);
@@ -86,5 +85,6 @@ export function explode() {
     })
 
     /* Performs a animation after request*/
-    requestAnimationFrame(explode);
+    const ex = explode.bind(null, brick);
+    requestAnimationFrame(ex());
 }
