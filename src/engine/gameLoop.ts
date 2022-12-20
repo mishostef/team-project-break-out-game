@@ -122,13 +122,8 @@ export class Game {
             this.lives--;
             this.gameOver = true;
             if (this.lives === 0) {
-                showGameOverMessage(this.scorePoints); setTimeout(() => {
-                    this.dom.showInitialScreen();
-                    this.lives = this.maxLives;
-                    this.bricks = createBricks();
-                    this.scorePoints = 0;
-                    this.dom.hideNewGameButton();
-                }, 1500);
+                showGameOverMessage(this.scorePoints);
+                this.initScreenAndSettings();
 
             }
             this.dom.setLives(this.lives);
@@ -139,6 +134,17 @@ export class Game {
         } else if (isBallHittingTheLeftWall(this.ball)) {
             this.ball.velocity.x = Math.abs(this.ball.velocity.x);
         }
+
+    }
+
+    initScreenAndSettings() {
+        setTimeout(() => {
+            this.dom.showInitialScreen();
+            this.lives = this.maxLives;
+            this.bricks = createBricks();
+            this.scorePoints = 0;
+            this.dom.hideNewGameButton();
+        }, 1500);
     }
     //
     startGame() {
@@ -164,7 +170,6 @@ export class Game {
         if (deleteBrickIndex != -1) {
             const brick = this.bricks[deleteBrickIndex];
             particles = createParticles(brick);
-            console.log('particles', particles);
             changeBallDirection(this.ball, brick);
             this.bricks.splice(deleteBrickIndex, 1);
             this.scorePoints += BRICK_BONUS_POINTS;
@@ -181,6 +186,10 @@ export class Game {
             requestAnimationFrame(this.update.bind(this));
         } else if (this.bricks.length === 0) {
             this.dom.showCongratulations();
+            this.initScreenAndSettings();
+            setTimeout(() => {
+                this.dom.hideCongratulations();
+            }, 1500);
         }
     }
 }

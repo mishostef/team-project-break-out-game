@@ -46,9 +46,9 @@ export function createParticles(brick: Brick) {
         let particle = new Particle(brick.position.x + BRICK_WIDTH / 2, brick.position.y + BRICK_HEIGHT / 2, radius, dx, dy);
         particles.push(particle);
     }
-    console.log(particles);
     return particles;
 }
+
 export function explode(particles) {
     if (particles.length) {
         particles.forEach((particle, i) => {
