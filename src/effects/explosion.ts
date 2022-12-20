@@ -49,3 +49,14 @@ export function createParticles(brick: Brick) {
     console.log(particles);
     return particles;
 }
+export function explode(particles) {
+    if (particles.length) {
+        particles.forEach((particle, i) => {
+            if (particle.alpha <= 0) {
+                particles.splice(i, 1);
+            } else {
+                particle.update();
+            }
+        });
+    }
+}

@@ -5,7 +5,9 @@ export class Ball {
   public velocity: Vector = new Vector(0, 0);
   constructor(public position: Vector, image: string, ballvelocity?: Vector) {
     this.image.src = image;
-    if (!!ballvelocity) this.velocity = ballvelocity;
+    if (!!ballvelocity) {
+      this.velocity = ballvelocity;
+    }
   }
 
   getImage(): HTMLImageElement {

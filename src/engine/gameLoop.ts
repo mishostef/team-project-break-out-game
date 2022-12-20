@@ -15,7 +15,7 @@ import { changeBallDirection, handleBoardHit } from "../physics/movement";
 import { Vector } from "../geometry/vector";
 import { getHitBrickIndex } from "../physics/misc";
 import { createBricks } from "../utils/brickFactory";
-import { createParticles } from "../effects/explosion";
+import { createParticles, explode } from "../effects/explosion";
 import { DOMView } from "../view/DOMView";
 
 
@@ -107,21 +107,13 @@ export class Game {
         canvasView.drawBricks(this.bricks);
         canvasView.drawBoard(this.board);
         canvasView.drawBall(this.ball);
-        if (particles.length){
-            particles.forEach((particle, i) => {
-                if (particle.alpha <= 0) {
-                    particles.splice(i, 1);
-                } else {
-                    particle.update();
-                }
-            });
-        }
+        explode(particles);
         this.collisionDetector();
         if (!this.gameOver) {
             move(this.ball);
         }
-    }
 
+    }
     collisionDetector() {
         if (isBallCollidingWithBoard(this.ball, this.board)) {
             handleBoardHit(this.ball, this.board);
