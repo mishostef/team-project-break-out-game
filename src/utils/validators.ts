@@ -8,15 +8,15 @@ import {
 } from "./constants";
 
 export function isBallHittingTheLeftWall(ball: Ball) {
-  return ball.position.x <= 0;
+  return ball.position.x <= BALL_DIAMETER / 2;
 }
 
 export function isBallHittingRightWall(ball, canvasView: CanvasView) {
-  return ball.position.x > canvasView.canvas.width - BALL_DIAMETER;
+  return ball.position.x > canvasView.canvas.width - BALL_DIAMETER / 2;
 }
 
 export function isBallHittingTheCeiling(ball: Ball) {
-  return ball.position.y <= 0;
+  return ball.position.y <= BALL_DIAMETER / 2;
 }
 
 export function isBallHittingTheFloor(ball: Ball, canvasView: CanvasView) {
